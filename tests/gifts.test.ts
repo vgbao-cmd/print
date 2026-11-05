@@ -1,5 +1,5 @@
 import {it,expect} from 'vitest';
-import {PRESETS,resolvePresets,guideItems,verifiedMapping} from '../src/gift-guide';
+import {PRESETS,resolvePresets,guideItems,verifiedMapping,snapshotGuide,selectGuideAccount,selectGuideRoom} from '../src/gift-guide';
 import {DEFAULTS,TIERS,TARGETS,validSettings,type Gift,type LiveEvent} from '../src/shared';
 import {Store} from '../electron/store';
 import {demoEvents} from '../electron/demo';
@@ -20,3 +20,17 @@ it('reset consumes old deferred event keys so they cannot reappear when verifica
 it('previews the correct seven prices and effects, with circular avatars inside the wider paper',()=>{const events=demoEvents('guide','demo:test');expect(events.map(e=>e.coins)).toEqual([1,5,10,20,30,88,100]);expect(events.map(e=>e.demoTier)).toEqual(TIERS.slice(1));const s=new Store(':memory:');try{s.ingest(events);const batch=s.claim(7,'demo');expect(batch).toHaveLength(7);for(const p of batch){const l=printLayout(p);expect(l.left+l.width).toBeLessThanOrEqual(PAPER_WIDTH);expect(72+l.height+l.feed).toBeLessThanOrEqual(PAPER_HEIGHT+.0001);}s.complete('demo');expect(s.snapshot('demo:test').spotlightQueue).toBe(6);}finally{s.close();}});
 it('recognizes every supplied WebP asset and rejects malformed headers',()=>{for(const tier of TIERS.slice(1)){const buffer=readFileSync(join('resources','gifts',tier+'.webp')),size=webpSize(buffer);expect(size?.width).toBeGreaterThan(0);expect(size?.height).toBeGreaterThan(0);expect(size!.width).toBeLessThanOrEqual(512);expect(size!.height).toBeLessThanOrEqual(512);expect(webpSize(buffer.subarray(0,25))).toBeNull();}expect(webpSize(Buffer.alloc(40))).toBeNull();});
 it('restores deferred gift events after reopening and waits for fresh verification',()=>{const directory=mkdtempSync(join(tmpdir(),'unverified-gifts-')),file=join(directory,'printer.sqlite');let s=new Store(file);try{s.save(resolvePresets(s.settings,catalog));const e=gift('reopen');s.ingest([e]);s.close();s=new Store(file);expect(s.count()).toBe(0);expect(s.snapshot(e.scope).pendingGifts).toBe(1);s.verify(e.scope,catalog);expect(s.count()).toBe(1);s.verify(e.scope,catalog);expect(s.count()).toBe(1);}finally{s.close();rmSync(directory,{recursive:true,force:true});}});
+
+it('shows configured suggestions without granting verification before any catalog exists',()=>{
+ const custom={...catalog[3],id:'custom',name:'Custom gift',coins:23};const settings={...structuredClone(DEFAULTS),mappings:{royal:custom}};
+ const entries=guideItems(settings,false);expect(entries).toHaveLength(7);expect(entries.every(e=>e.preview)).toBe(true);
+ expect(entries.find(e=>e.tier==='royal')!.gift).toEqual(custom);expect(verifiedMapping(custom,[], 'royal')).toBe(false);
+ expect(guideItems(settings,false,[])).toHaveLength(0);
+});
+it('retains display catalog across disconnect/stop/reset snapshots but invalidates account and room changes',()=>{
+ const state:any={settings:resolvePresets(DEFAULTS,catalog),demo:false,gifts:[],connection:'disconnected',stopped:true,guideAccount:'pinus.si',guideRoom:'tiktok:123',guideCatalog:catalog};
+ expect(snapshotGuide(state)).toHaveLength(7);selectGuideAccount(state,'pinus.si');selectGuideRoom(state,'tiktok:123');expect(snapshotGuide(state).every(e=>!e.preview)).toBe(true);
+ state.stopped=false;state.session='reset';expect(snapshotGuide(state)).toHaveLength(7);
+ selectGuideRoom(state,'tiktok:456');expect(state.guideCatalog).toBeUndefined();expect(snapshotGuide(state).every(e=>e.preview)).toBe(true);
+ state.guideCatalog=catalog;selectGuideAccount(state,'other');expect(state.guideCatalog).toBeUndefined();expect(state.guideRoom).toBeUndefined();
+});

@@ -31,7 +31,7 @@ Other commands: `npm run dev`, `npm test`, `npm run benchmark`, `npm run smoke`,
 6. **1,000 EVENTS** runs a synthetic burst. **CROSS SPEED THRESHOLDS** adds 90 classic prints.
 7. Pause printing, close the app, and reopen it to check recovery. STOP keeps the exact current print and spotlight checkpoint when reopening. Use RESUME to continue. Without STOP, a crash may restart an unfinished animation.
 
-Demo print styles are independent of the real gift guide. Demo shows the labeled suggestion preview; LIVE hides unverified entries and warns in Control Panel. Demo does not connect to TikTok or start a livestream.
+Demo print styles are independent of the real gift guide. Before the first room catalog, Demo and LIVE show configured suggestions labeled “Suggested gifts · availability may vary”. After a successful catalog fetch, unavailable gifts are hidden. Verification details stay in Control Panel. Demo does not connect to TikTok or start a livestream.
 
 ## Connect to TikTok LIVE
 
@@ -207,3 +207,22 @@ Packaged builds always use bundled renderer files and ignore `VITE_DEV_SERVER_UR
 connector in an isolated test profile. Its real network observation is recorded in
 `artifacts/connection-result.json`; it does not simulate successful LIVE access.
 Unit lifecycle tests use mock transports and do not establish LIVE compatibility.
+
+
+### Gift Guide display and verification
+
+The Broadcast Output guide is independent of connection and STOP/RESUME. Before a
+room catalog is available, it shows configured gifts (or the seven built-in
+suggestions) with “Suggested gifts · availability may vary”. Suggested display
+never invents or verifies a gift ID and never authorizes an effect. Event intake
+still checks the real room scope, gift ID and catalog metadata.
+
+A successfully fetched catalog is retained for display during temporary disconnects
+and reconnects to the same account and room. Selecting another account or resolving
+a different room clears that display cache; new suggestions remain unverified
+until the new catalog arrives. The cache is in memory and is not reused after app
+restart. A known missing gift is hidden; custom mappings are retained in Settings.
+RESET SESSION preserves settings and the display catalog. Local bundled images
+appear immediately as fallbacks, and cached room images can replace them. Text
+remains even if neither image can decode. No network or paid service is required
+to display the suggested guide.

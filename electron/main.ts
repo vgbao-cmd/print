@@ -4,10 +4,10 @@ import {appendFileSync,mkdirSync,writeFileSync,readFileSync} from 'node:fs';
 import {randomUUID} from 'node:crypto';
 import {Ledger} from './ledger';
 import {TikTok} from './tiktok';
-import {safeError,type ConnectionDiagnostic} from './connection-diagnostics';
+import {normalizeUsername,safeError,type ConnectionDiagnostic} from './connection-diagnostics';
 import {Images} from './images';
 import {MusicFiles} from './music';
-import {PRESETS,resolvePresets,verifiedMapping} from '../src/gift-guide';
+import {PRESETS,resolvePresets,verifiedMapping,selectGuideAccount,selectGuideRoom} from '../src/gift-guide';
 import {guideCheck} from './guide-check';
 import {showCheck} from './show-check';
 import {premiumCheck} from './premium-check';
@@ -97,7 +97,7 @@ async function tick(){
 async function gifts(){
   if(catalogBusy)return;catalogBusy=true;const generation=tiktok.session;
   try{
-    const list=await tiktok.gifts();if(generation!==tiktok.session)return;state.gifts=list;
+    const list=await tiktok.gifts();if(generation!==tiktok.session)return;state.gifts=list;state.guideCatalog=list;state.guideRoom=scope;
     state.settings=await ledger.request('save',resolvePresets(state.settings,list));if(generation!==tiktok.session)return;state.catalogScope=scope;await ledger.request('verify',{scope,gifts:list});if(generation===tiktok.session)state.message=S.ui.catalogLoaded;
   }catch(error){if(generation===tiktok.session){diagnostic('gift-catalog',error);state.message=S.errors.catalog;}}finally{catalogBusy=false;publish();if(generation!==tiktok.session&&tiktok.connected)void gifts();}
 }
@@ -111,6 +111,8 @@ async function action(name:string,data:any){
           await drain();const pending=await ledger.request('snapshot',scope);
           if(request!==connectionRequest)break;
           if(state.demo&&(pending.queue||pending.spotlightQueue||state.batch||state.spotlight))return {ok:false,message:'Finish Demo prints and spotlights, or use RESET SESSION before connecting LIVE. Demo work is never mixed into a LIVE session.'};
+          let account='';try{account=normalizeUsername(typeof data==='string'?data:'').toLowerCase();}catch{}
+          selectGuideAccount(state,account);
           state.error='';state.demo=false;state.gifts=[];state.catalogScope='';
           tiktok.connect(typeof data==='string'?data:'');
           await ledger.request('verify',{scope:'',gifts:[]});
@@ -167,7 +169,7 @@ app.whenReady().then(async()=>{
   Menu.setApplicationMenu(Menu.buildFromTemplate([{label:'Live Avatar Printer',submenu:[{label:'Open Broadcast Window',click:openOutput},{type:'separator'},{label:'Exit',role:'quit'}]},{label:'View',submenu:[{label:'Toggle Full Screen',role:'togglefullscreen'}]}]));
   images=new Images(join(app.getPath('userData'),'image-cache'));ledger=new Ledger(app.getPath('userData'));musicFiles=new MusicFiles(join(app.getPath('userData'),'music'));const loaded=await ledger.request('load');state.settings=loaded.settings;state.session=loaded.session;scope=loaded.scope;state.demo=scope.startsWith('demo:');
   if(loaded.runtime?.stopped){clock=new PlaybackClock(Date.now,loaded.runtime.clock,true);state.stopped=true;state.batch=loaded.runtime.batch;state.spotlight=loaded.runtime.spotlight;state.epoch=loaded.runtime.epoch??0;}
-  tiktok=new TikTok(accept,(connection,message)=>{state.connection=connection;state.connectionMessage=message;state.roomId=tiktok.room;publish();},room=>{scope=`tiktok:${room}`;state.demo=false;state.gifts=[];state.catalogScope='';void ledger.request('verify',{scope:'',gifts:[]}).catch(fault);void ledger.request('scope',scope).catch(fault);void gifts();},undefined,connectionDiagnostic);
+  tiktok=new TikTok(accept,(connection,message)=>{state.connection=connection;state.connectionMessage=message;state.roomId=tiktok.room;publish();},room=>{selectGuideRoom(state,`tiktok:${room}`);scope=`tiktok:${room}`;state.demo=false;state.gifts=[];state.catalogScope='';void ledger.request('verify',{scope:'',gifts:[]}).catch(fault);void ledger.request('scope',scope).catch(fault);void gifts();},undefined,connectionDiagnostic);
   control=new BrowserWindow({...windowOptions(),title:'Live Avatar Printer — Control Panel',width:1320,height:920,minWidth:980,minHeight:720,show:!testing});
   control.on('closed',()=>{control=undefined;app.quit();});load(control,'control');openOutput();
   const isControl=(id:number)=>control?.webContents.id===id;

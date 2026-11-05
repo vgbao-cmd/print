@@ -20,6 +20,7 @@ export interface Print {id:string; name:string; userId:string; avatar:string; ti
 export interface Batch {token:string; items:Print[]; duration:number; started:number}
 export interface Spotlight {token:string;item:Print;duration:number;started:number}
 export interface Snapshot {
+  guideCatalog?:Gift[];guideRoom?:string;guideAccount?:string;
   connectionMessage?:string;roomId?:string;connectionDiagnostic?:string;
   settings:Settings; connection:string; message:string; paused:boolean; demo:boolean; queue:number; completed:number;
   likesRemainder:number; top:{name:string;coins:number}[]; preview:Print[]; batch:Batch|null; mode:number;

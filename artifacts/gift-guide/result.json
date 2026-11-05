@@ -172,7 +172,7 @@
       "imageLoaded": true
     }
   ],
-  "unverifiedVisible": 0,
+  "unverifiedVisible": 7,
   "sizes": [
     {
       "viewport": [
@@ -333,10 +333,10 @@
   "completed": 7,
   "pendingSpotlights": 4,
   "render": {
-    "frames": 61,
-    "totalMs": 455.2999999821186,
-    "maxMs": 177.2999999821186,
-    "meanMs": 7.463934425936371,
+    "frames": 68,
+    "totalMs": 485.90000000037253,
+    "maxMs": 46.700000000186265,
+    "meanMs": 7.145588235299596,
     "textures": 4,
     "guide": [
       {
@@ -384,7 +384,7 @@
     ],
     "layouts": [
       {
-        "id": "demo:local:gift:1e267340-2098-45a8-9102-8d7f55e00c59:5:draw:1",
+        "id": "demo:local:gift:fbb43645-5ce1-4524-9171-e3474c06fc72:5:draw:1",
         "photoLoaded": true,
         "tier": "rainbow",
         "diameter": 384,
@@ -399,7 +399,7 @@
         "left": 48
       },
       {
-        "id": "demo:local:gift:1e267340-2098-45a8-9102-8d7f55e00c59:6:draw:1",
+        "id": "demo:local:gift:fbb43645-5ce1-4524-9171-e3474c06fc72:6:draw:1",
         "photoLoaded": true,
         "tier": "legendary",
         "diameter": 448,
@@ -414,22 +414,7 @@
         "left": 48
       },
       {
-        "id": "demo:local:gift:1e267340-2098-45a8-9102-8d7f55e00c59:3:draw:1",
-        "photoLoaded": true,
-        "tier": "love",
-        "diameter": 256,
-        "pad": 22,
-        "width": 300,
-        "imageHeight": 300,
-        "height": 430.13895223761665,
-        "row": 450.13895223761665,
-        "feed": 450.13895223761665,
-        "nameFont": 31.112698372208094,
-        "lineHeight": 36.71298407920555,
-        "left": 48
-      },
-      {
-        "id": "demo:local:gift:1e267340-2098-45a8-9102-8d7f55e00c59:7:draw:1",
+        "id": "demo:local:gift:fbb43645-5ce1-4524-9171-e3474c06fc72:7:draw:1",
         "photoLoaded": true,
         "tier": "fame",
         "diameter": 512,
@@ -442,12 +427,28 @@
         "nameFont": 44,
         "lineHeight": 51.919999999999995,
         "left": 48
+      },
+      {
+        "id": "demo:local:gift:fbb43645-5ce1-4524-9171-e3474c06fc72:3:draw:1",
+        "photoLoaded": true,
+        "tier": "love",
+        "diameter": 256,
+        "pad": 22,
+        "width": 300,
+        "imageHeight": 300,
+        "height": 430.13895223761665,
+        "row": 450.13895223761665,
+        "feed": 450.13895223761665,
+        "nameFont": 31.112698372208094,
+        "lineHeight": 36.71298407920555,
+        "left": 48
       }
     ]
   },
   "cache": {
-    "entries": 7,
-    "bytes": 54689
+    "entries": 0,
+    "bytes": 0
   },
-  "note": "CDN images downloaded successfully and decoded in Electron. Verification logic tested with synthetic room catalogs. No real TikTok LIVE or LIVE Studio session tested."
+  "note": "Gift images decoded in Electron with local fallback available. Verification logic tested with synthetic room catalogs. No real TikTok LIVE or LIVE Studio session tested.",
+  "validatedAt": "2026-11-05T14:40:00.503484+00:00"
 }

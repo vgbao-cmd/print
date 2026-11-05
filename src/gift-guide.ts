@@ -1,4 +1,4 @@
-import {TIERS,type Gift,type Settings,type Tier} from './shared';
+import {TIERS,type Gift,type Settings,type Tier,type Snapshot} from './shared';
 export const PRESETS:Partial<Record<Tier,Gift>>={
  glow:{id:'',name:'Rose',coins:1,image:'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp'},
  bloom:{id:'',name:'Finger Heart',coins:5,image:'https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/a4c4dc437fd3a6632aba149769491f49.png~tplv-obj.webp'},
@@ -17,5 +17,24 @@ export function resolvePresets(settings:Settings,catalog:Gift[]){
   const matches=catalog.filter(g=>g.coins===preset.coins&&giftName(g.name)===giftName(preset.name));if(matches.length===1)next.mappings[tier]={...matches[0],displayName:preset.name};
  }return next;
 }
-export function guideItems(settings:Settings,demo:boolean,catalog:Gift[]){return TIERS.slice(1).flatMap(tier=>{const g=settings.mappings[tier];return demo?[{tier,gift:PRESETS[tier]!,preview:true}]:verifiedMapping(g,catalog,tier)?[{tier,gift:g!,preview:false}]:[];});}
+// Display suggestions never grant event entitlement or verification.
+export function guideItems(settings:Settings,demo:boolean,catalog?:Gift[]){return TIERS.slice(1).flatMap(tier=>{
+ const g=settings.mappings[tier];
+ if(demo||catalog===undefined)return [{tier,gift:g??PRESETS[tier]!,preview:true}];
+ if(!verifiedMapping(g,catalog,tier))return [];
+ const actual=catalog.find(a=>a.id===g!.id)!;
+ return [{tier,gift:{...actual,displayName:g!.displayName},preview:false}];
+});}
+export function snapshotGuide(state:Snapshot){return guideItems(state.settings,state.demo,state.guideCatalog??(state.gifts.length?state.gifts:undefined));}
+
 export function fallbackGiftImage(g:Gift,tier:Tier){const preset=PRESETS[tier];return preset&&giftName(g.name)===giftName(preset.name)&&g.coins===preset.coins?preset.image:'';}
+
+type GuideCache=Pick<Snapshot,'guideAccount'|'guideRoom'|'guideCatalog'>;
+export function selectGuideAccount(state:GuideCache,account:string){
+ if(state.guideAccount!==account){state.guideCatalog=undefined;state.guideRoom=undefined;}
+ state.guideAccount=account;
+}
+export function selectGuideRoom(state:GuideCache,room:string){
+ if(state.guideRoom!==room)state.guideCatalog=undefined;
+ state.guideRoom=room;
+}

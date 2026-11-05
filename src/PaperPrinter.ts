@@ -1,5 +1,5 @@
 import type {Batch,Print,Snapshot} from './shared';
-import {guideItems} from './gift-guide';
+import {snapshotGuide} from './gift-guide';
 import {PAPER_WIDTH,PAPER_HEIGHT,PAPER_X,PAPER_Y,printLayout,paperPositions,type PrintLayout} from './print-layout';
 import {wrapName} from './text-layout';
 import {playbackNow} from './playback';
@@ -89,14 +89,15 @@ export class PaperPrinter {
   for(let i=0;i<3;i++){c.fillStyle=i===0?'#63dfbb':i===1?'#57bbd6':'#819fc5';c.beginPath();c.arc(995,259+i*26,4,0,Math.PI*2);c.fill();}
   showAmbient(c,spotlight,sp);this.drawSpotlight();
   this.drawGiftGuide();
-  this.text(`${this.state?.queue??0} ${S.queue}`,540,1880,18,'#8aa5b9',500,'center');
-  const top=this.state?.top??[];if(top.length)this.text(S.supporters+'  '+top.map(p=>`${p.name} | ${S.coins(p.coins)}`).join('    '),540,1855,16,'#9eb8c9',400,'center',920);
+  this.text(`${this.state?.queue??0} ${S.queue}`,540,1894,18,'#8aa5b9',500,'center');
+  const top=this.state?.top??[];if(top.length)this.text(S.supporters+'  '+top.map(p=>`${p.name} | ${S.coins(p.coins)}`).join('    '),540,1868,16,'#9eb8c9',400,'center',920);
   if(this.state?.honored){const texture=this.textures.get(this.state.honored.id);if(texture)drawHonored(c,this.state.honored,texture);}const ms=performance.now()-start;this.metrics.frames++;this.metrics.totalMs+=ms;this.metrics.maxMs=Math.max(this.metrics.maxMs,ms);return f;
  }
  drawGiftGuide(){
-  const state=this.state;if(!state)return;const entries=guideItems(state.settings,state.demo,state.connection==='connected'?state.gifts:[]);if(!entries.length)return;
+  const state=this.state;if(!state)return;const entries=snapshotGuide(state);if(!entries.length)return;
   this.text(state.demo?'GIFT GUIDE - DEMO PREVIEW':'GIFT GUIDE',540,1524,23,'#a9d6df',600,'center');
-  entries.forEach(({tier,gift},i)=>{const row=i<4?0:1,col=i<4?i:i-4,count=row===0?Math.min(4,entries.length):entries.length-4,w=232,x=540+(col-(count-1)/2)*w,y=1574+row*146,image=this.giftImages.get(tier);
+  if(entries.some(e=>e.preview))this.text('Suggested gifts · availability may vary',540,1544,18,'#a9bdc9',400,'center');
+  entries.forEach(({tier,gift},i)=>{const row=i<4?0:1,col=i<4?i:i-4,count=row===0?Math.min(4,entries.length):entries.length-4,w=232,x=540+(col-(count-1)/2)*w,y=1586+row*146,image=this.giftImages.get(tier);
    if(image){const k=Math.min(76/image.naturalWidth,66/image.naturalHeight);this.ctx.drawImage(image,x-image.naturalWidth*k/2,y-image.naturalHeight*k/2,image.naturalWidth*k,image.naturalHeight*k);}
    this.text(gift.displayName||gift.name,x,y+58,26,'#eef1ed',600,'center',222);this.text(S.coins(gift.coins),x,y+85,22,'#dbc68e',500,'center',222);this.text(S.tiers[tier].replace('PRINT','Print').replace('HALL OF FAME','Hall of Fame').replace('LEGENDARY','Legendary').replace('RAINBOW','Rainbow').replace('ROYAL','Royal').replace('BLOOM','Bloom').replace('GLOW','Glow').replace('LOVE','Love'),x,y+109,20,COLORS[tier],500,'center',222);
   });
