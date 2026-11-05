@@ -1,3 +1,5 @@
+import {eventGiftDiagnostic} from './gift-diagnostics';
+import type {GiftEventDiagnostic} from '../src/shared';
 import {DatabaseSync} from 'node:sqlite';
 import {verifiedMapping} from '../src/gift-guide';
 import {finishHistory} from '../src/print-layout';
@@ -9,7 +11,7 @@ import {DEFAULTS,TIERS,validSettings,styleFor,type LiveEvent,type Print,type Set
 export class Store {
   catalogScope='';catalogGifts:import('../src/shared').Gift[]=[];
   db:DatabaseSync; settings:Settings; session:string;
-  constructor(file:string){
+  constructor(file:string,private reportGift:(entry:GiftEventDiagnostic)=>void=()=>{}){
     this.db=new DatabaseSync(file);
     this.db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA busy_timeout=5000;
       CREATE TABLE IF NOT EXISTS meta(key TEXT PRIMARY KEY,value TEXT NOT NULL);
@@ -30,12 +32,27 @@ export class Store {
   transaction<T>(fn:()=>T):T{this.db.exec('BEGIN IMMEDIATE');try{const result=fn();this.db.exec('COMMIT');return result;}catch(e){this.db.exec('ROLLBACK');throw e;}}
   save(s:Settings){this.settings=validSettings(s);this.set('settings',this.settings);return this.settings;}
   recover(){this.db.prepare("UPDATE jobs SET state='pending',token=NULL WHERE state='active'").run();this.db.prepare("UPDATE spotlights SET state='pending',token=NULL WHERE state='active'").run();}
-  ingest(events:LiveEvent[]){return this.transaction(()=>events.map(e=>this.event(e)));}
+  ingest(events:LiveEvent[]){
+    const results=this.transaction(()=>events.map(e=>this.event(e)));
+    events.forEach((e,i)=>{if(e.type==='gift'){const actual=this.catalogScope===e.scope?this.catalogGifts.find(g=>g.id===e.giftId):undefined;
+      this.reportGift(eventGiftDiagnostic({...e,coins:e.coins??actual?.coins},{...results[i],tier:results[i].tier??TIERS.find(t=>this.settings.mappings[t]?.id===e.giftId)},actual?.name));}});
+    return results;
+  }
   private event(e:LiveEvent){
     if(!e.id||!e.userId||!Number.isSafeInteger(e.count)||e.count<0||e.count>1e7)throw Error('Invalid event');
-    const receipt=`${e.scope}:${e.type}:${e.id}`;
-    if(e.type==='gift'&&e.scope.startsWith('tiktok:')){const actual=this.catalogScope===e.scope?this.catalogGifts.find(g=>g.id===e.giftId):undefined;const tier=TIERS.find(t=>this.settings.mappings[t]?.id===e.giftId);if(!actual||(e.coins!==undefined&&e.coins!==actual.coins)||(tier&&!verifiedMapping(this.settings.mappings[tier],this.catalogGifts,tier))){if(!this.db.prepare('SELECT 1 FROM receipts WHERE key=?').get(receipt))this.db.prepare('INSERT OR IGNORE INTO pending_gifts VALUES(?,?)').run(receipt,JSON.stringify(e));return {fresh:false,prints:0,pending:true};}e={...e,coins:actual.coins};}
-    this.db.prepare('DELETE FROM pending_gifts WHERE key=?').run(receipt);
+    const baseReceipt=`${e.scope}:${e.type}:${e.id}`;
+    // Intermediate and final updates can share msgId. Their durable receipts
+    // differ, while the final combo key still guarantees a single reward.
+    const receipt=e.type==='gift'&&e.streakable?`${baseReceipt}:combo:${e.streak}:${e.count}:${!!e.end}`:baseReceipt;
+    if(e.type==='gift'&&this.db.prepare('SELECT 1 FROM receipts WHERE key=?').get(receipt)){this.set('duplicates',this.get('duplicates',0)+1);return {fresh:false,prints:0,outcome:'duplicate',reason:'Event receipt already committed.'};}
+    if(e.type==='gift'&&e.scope.startsWith('tiktok:')){
+      const actual=this.catalogScope===e.scope?this.catalogGifts.find(g=>g.id===e.giftId):undefined;
+      const tier=TIERS.find(t=>this.settings.mappings[t]?.id===e.giftId);
+      const reason=this.catalogScope!==e.scope?'Room catalog is unavailable for this connection. Refresh Gift List in Settings.':!actual?'Gift ID is absent from the current room catalog. Refresh Gift List.':(e.coins!==undefined&&e.coins!==actual.coins)?'Event price differs from room catalog; refresh the list and mapping.':(tier&&!verifiedMapping(this.settings.mappings[tier],this.catalogGifts,tier))?'Saved mapping differs from the room catalog or lacks an English display name. Select this gift in Settings and save.':'';
+      if(reason){this.db.prepare('INSERT OR IGNORE INTO pending_gifts VALUES(?,?)').run(receipt,JSON.stringify(e));return {fresh:false,prints:0,pending:true,outcome:'verification failed',reason,tier};}
+      e={...e,coins:actual!.coins};
+    }
+    this.db.prepare('DELETE FROM pending_gifts WHERE key IN (?,?)').run(receipt,baseReceipt);
     const fresh=Number(this.db.prepare('INSERT OR IGNORE INTO receipts VALUES(?)').run(receipt).changes)>0;
     if(!fresh){this.set('duplicates',this.get('duplicates',0)+1);return {fresh:false,prints:0};}
     this.set('received',this.get('received',0)+1);
@@ -46,8 +63,8 @@ export class Store {
       const total=Number(p.likes)+e.count;draws=Math.floor(total/this.settings.likes);
       this.db.prepare('UPDATE people SET likes=? WHERE session=? AND scope=? AND id=?').run(total%this.settings.likes,this.session,e.scope,e.userId);
     } else {
-      if(e.streakable&&!e.end)return {fresh:true,prints:0};
-      if(e.streak){const key=`${e.scope}:${e.userId}:${e.giftId}:${e.streak}`;if(!Number(this.db.prepare('INSERT OR IGNORE INTO combos VALUES(?)').run(key).changes))return {fresh:true,prints:0};}
+      if(e.streakable&&!e.end)return {fresh:true,prints:0,outcome:'combo pending',reason:'Waiting for the final combo update.'};
+      if(e.streak){const key=`${e.scope}:${e.userId}:${e.giftId}:${e.streak}`;if(!Number(this.db.prepare('INSERT OR IGNORE INTO combos VALUES(?)').run(key).changes))return {fresh:true,prints:0,outcome:'duplicate',reason:'Final combo already rewarded.'};}
       const configured=TIERS.find(t=>this.settings.mappings[t]?.id===e.giftId&&(!e.scope.startsWith('tiktok:')||(this.catalogScope===e.scope&&verifiedMapping(this.settings.mappings[t],this.catalogGifts,t))));
       const mapped=configured?this.settings.mappings[configured]:undefined;
       const unit=e.coins??mapped?.coins??0;
@@ -55,12 +72,12 @@ export class Store {
       this.db.prepare('UPDATE people SET coins=coins+? WHERE session=? AND scope=? AND id=?').run(unit*e.count,this.session,e.scope,e.userId);
       if(e.scope.startsWith('demo:')&&e.demoTier)tier=e.demoTier;
       else if(configured)tier=configured;
-      else return {fresh:true,prints:0};
+      else return {fresh:true,prints:0,outcome:'unmapped',reason:'No tier maps to this real gift ID. Select the gift in Settings, set an English display name and Save Settings.'};
       quantity=e.count;draws=quantity>0?1:0;
     }
     if(draws){const item:Print={id:receipt,userId:e.userId,name:e.name,avatar:e.avatar||String(p.avatar),tier,quantity,source:e.scope,style:{...this.settings.tiers[tier]}};
       this.db.prepare('INSERT INTO jobs(id,payload,kind,remaining) VALUES(?,?,?,?)').run(receipt,JSON.stringify(item),e.type,draws);}
-    return {fresh:true,prints:draws,remainder:e.type==='like'?(Number(p.likes)+e.count)%this.settings.likes:undefined};
+    return {fresh:true,prints:draws,tier,outcome:draws?'queued':'no print',reason:draws?'Durable print job committed.':'',remainder:e.type==='like'?(Number(p.likes)+e.count)%this.settings.likes:undefined};
   }
   count(){return Number(this.db.prepare("SELECT coalesce(sum(remaining),0) AS n FROM jobs WHERE state='pending'").get()!.n);}
   claim(size:number,token:string):Print[]{return this.transaction(()=>{
@@ -86,7 +103,7 @@ export class Store {
     if(item.tier==='fame')this.set('honored',item);
     if(item.tier==='legendary')this.set('seals',[item.id,...this.get<string[]>('seals',[]).filter(id=>id!==item.id)].slice(0,12));
     return Number(this.db.prepare("DELETE FROM spotlights WHERE state='active' AND token=?").run(token).changes);});}
-  verify(scope:string,gifts:import('../src/shared').Gift[]){this.catalogScope=scope;this.catalogGifts=gifts;let cursor='',total=0;while(true){const rows=this.db.prepare('SELECT key,payload FROM pending_gifts WHERE key>? ORDER BY key LIMIT 128').all(cursor);if(!rows.length)break;cursor=String(rows.at(-1)!.key);this.ingest(rows.map(r=>JSON.parse(String(r.payload))));total+=rows.length;}return total;}
+  verify(scope:string,gifts:import('../src/shared').Gift[]){this.catalogScope=scope;this.catalogGifts=gifts;if(!scope)return 0;let cursor='',total=0;while(true){const rows=this.db.prepare("SELECT key,payload FROM pending_gifts WHERE key>? AND json_extract(payload,'$.scope')=? ORDER BY key LIMIT 128").all(cursor,scope);if(!rows.length)break;cursor=String(rows.at(-1)!.key);this.ingest(rows.map(r=>JSON.parse(String(r.payload))));total+=rows.length;}return total;}
   runtime(data:unknown){this.set('runtime',data);}
   resetSession(){return this.transaction(()=>{let cursor='';while(true){const rows=this.db.prepare('SELECT key,payload FROM pending_gifts WHERE key>? ORDER BY key LIMIT 128').all(cursor);if(!rows.length)break;cursor=String(rows.at(-1)!.key);for(const row of rows){this.db.prepare('INSERT OR IGNORE INTO receipts VALUES(?)').run(row.key!);const e:LiveEvent=JSON.parse(String(row.payload));if(e.streak)this.db.prepare('INSERT OR IGNORE INTO combos VALUES(?)').run(`${e.scope}:${e.userId}:${e.giftId}:${e.streak}`);}}this.db.exec('DELETE FROM pending_gifts;DELETE FROM jobs;DELETE FROM spotlights;DELETE FROM people;');this.session=randomUUID();this.set('session',this.session);for(const key of ['completed','received','duplicates','giftRun'])this.set(key,0);this.set('honored',null);this.set('paperHistory',[]);this.set('seals',[]);this.set('runtime',null);return this.session;});}
   clear(through=Number.MAX_SAFE_INTEGER){return this.transaction(()=>{const n=Number(this.db.prepare("SELECT coalesce(sum(remaining),0) n FROM jobs WHERE state='pending' AND seq<=?").get(through)!.n);this.db.prepare("DELETE FROM jobs WHERE state='pending' AND seq<=?").run(through);return n;});}

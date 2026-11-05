@@ -87,5 +87,13 @@ describe('TikTok connection lifecycle (mock transport, not LIVE validation)',()=
  it('ignores old session callbacks after a manual reconnect',async()=>{
   const old=new Fake(),next=new Fake(),{t,status}=setup([old,next]);t.connect('name');await flush();const callbacks=old.listeners('disconnected');t.disconnect();t.connect('other');await flush();for(const cb of callbacks)cb();expect(status).toHaveBeenLastCalledWith('connected','');t.disconnect();
  });
+ it('keeps gift listeners across reconnects and diagnoses normalization rejection',async()=>{
+  const old=new Fake(),next=new Fake(),receive=vi.fn(),gifts:any[]=[];let index=0;
+  const t=new TikTok(receive,()=>{},()=>{},async()=>[old,next][index++],()=>{},100,e=>gifts.push(e));
+  const raw={common:{msgId:'g1'},user:{id:'u'},giftId:123,gift:{name:'Rose',diamondCount:1,type:0},repeatCount:1};
+  t.connect('name');await flush();old.emit('gift',raw);expect(receive).toHaveBeenCalledTimes(1);
+  t.disconnect();t.connect('name');await flush();old.emit('gift',raw);next.emit('gift',{...raw,common:{msgId:'g2'}});expect(receive).toHaveBeenCalledTimes(2);
+  next.emit('gift',{...raw,repeatCount:0});expect(receive).toHaveBeenCalledTimes(2);expect(gifts.at(-1)).toMatchObject({outcome:'rejected',giftId:'123'});t.disconnect();
+ });
  it('keeps catalog errors separate from the established transport',async()=>{const c=new Fake(),{t,status}=setup([c]);t.connect('name');await flush();c.emit('error',{info:'Failed to fetch room gifts.',exception:Error('HTTP 429')});expect(t.connected).toBe(true);expect(status).toHaveBeenLastCalledWith('connected','');t.disconnect();});
 });

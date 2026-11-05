@@ -12,12 +12,13 @@ import {guideCheck} from './guide-check';
 import {showCheck} from './show-check';
 import {premiumCheck} from './premium-check';
 import {demoEvents} from './demo';
-import {SpeedPolicy,validSettings,type LiveEvent,type Settings,type Snapshot} from '../src/shared';
+import {SpeedPolicy,validSettings,type LiveEvent,type Settings,type Snapshot,type GiftEventDiagnostic} from '../src/shared';
 import {S} from '../src/strings';
+import {giftCheck,giftCheckFactory} from './gift-check';
 import {connectionCheck,connectionCheckStep} from './connection-check';
 import {PlaybackClock} from '../src/playback';
 
-const smoke=process.argv.includes('--smoke-test'),visual=process.argv.includes('--visual-test'),premium=process.argv.includes('--premium-test'),show=process.argv.includes('--show-test'),guide=process.argv.includes('--guide-test'),connectionTest=process.argv.includes('--connection-test'),testing=smoke||visual||premium||show||guide||connectionTest;
+const smoke=process.argv.includes('--smoke-test'),visual=process.argv.includes('--visual-test'),premium=process.argv.includes('--premium-test'),show=process.argv.includes('--show-test'),guide=process.argv.includes('--guide-test'),connectionTest=process.argv.includes('--connection-test'),giftTest=process.argv.includes('--gift-intake-test'),testing=smoke||visual||premium||show||guide||connectionTest||giftTest;
 if(testing){const dir=join(process.cwd(),'artifacts',`test-profile-${Date.now()}`);mkdirSync(dir,{recursive:true});app.setPath('userData',dir);}
 app.setName('Live Avatar Printer');
 app.commandLine.appendSwitch('autoplay-policy','no-user-gesture-required');
@@ -36,6 +37,11 @@ function connectionDiagnostic(entry:ConnectionDiagnostic){
   state.connectionDiagnostic=`${entry.time} · ${entry.stage} · ${entry.code} · attempt ${entry.attempt}`;
   try{appendFileSync(join(app.getPath('userData'),'diagnostics.log'),JSON.stringify(entry)+'\n');}catch{}
   publish();
+}
+function giftDiagnostic(entry:GiftEventDiagnostic){
+  state.recentGiftEvents=[entry,...(state.recentGiftEvents??[])].slice(0,80);
+  try{appendFileSync(join(app.getPath('userData'),'gift-events.log'),JSON.stringify(entry)+'\n');}catch{}
+  // The regular snapshot tick publishes this bounded list without flooding IPC.
 }
 function diagnostic(stage:string,error:unknown){
   // Never persist connector payloads, URLs, raw error messages, cookies or tokens.
@@ -118,7 +124,7 @@ async function action(name:string,data:any){
           await ledger.request('verify',{scope:'',gifts:[]});
         }finally{connectionPreparing=false;}break;
       }
-      case 'copyDiagnostics':clipboard.writeText(JSON.stringify({app:app.getVersion(),electron:process.versions.electron,node:process.versions.node,platform:process.platform,packaged:app.isPackaged,connector:'2.5.0',connection:state.connection,roomId:state.roomId,history:connectionHistory},null,2));return {ok:true,message:'Redacted connection diagnostics copied.'};
+      case 'copyDiagnostics':clipboard.writeText(JSON.stringify({app:app.getVersion(),electron:process.versions.electron,node:process.versions.node,platform:process.platform,packaged:app.isPackaged,connector:'2.5.0',connection:state.connection,roomId:state.roomId,history:connectionHistory,recentGiftEvents:state.recentGiftEvents},null,2));return {ok:true,message:'Redacted connection diagnostics copied.'};
       case 'disconnect':connectionRequest++;tiktok.disconnect();break;
       case 'output':openOutput();break;
       case 'pause':state.paused=!state.paused;break;
@@ -167,9 +173,9 @@ async function action(name:string,data:any){
 }
 app.whenReady().then(async()=>{
   Menu.setApplicationMenu(Menu.buildFromTemplate([{label:'Live Avatar Printer',submenu:[{label:'Open Broadcast Window',click:openOutput},{type:'separator'},{label:'Exit',role:'quit'}]},{label:'View',submenu:[{label:'Toggle Full Screen',role:'togglefullscreen'}]}]));
-  images=new Images(join(app.getPath('userData'),'image-cache'));ledger=new Ledger(app.getPath('userData'));musicFiles=new MusicFiles(join(app.getPath('userData'),'music'));const loaded=await ledger.request('load');state.settings=loaded.settings;state.session=loaded.session;scope=loaded.scope;state.demo=scope.startsWith('demo:');
+  images=new Images(join(app.getPath('userData'),'image-cache'));ledger=new Ledger(app.getPath('userData'),giftDiagnostic);musicFiles=new MusicFiles(join(app.getPath('userData'),'music'));const loaded=await ledger.request('load');state.settings=loaded.settings;state.session=loaded.session;scope=loaded.scope;state.demo=scope.startsWith('demo:');
   if(loaded.runtime?.stopped){clock=new PlaybackClock(Date.now,loaded.runtime.clock,true);state.stopped=true;state.batch=loaded.runtime.batch;state.spotlight=loaded.runtime.spotlight;state.epoch=loaded.runtime.epoch??0;}
-  tiktok=new TikTok(accept,(connection,message)=>{state.connection=connection;state.connectionMessage=message;state.roomId=tiktok.room;publish();},room=>{selectGuideRoom(state,`tiktok:${room}`);scope=`tiktok:${room}`;state.demo=false;state.gifts=[];state.catalogScope='';void ledger.request('verify',{scope:'',gifts:[]}).catch(fault);void ledger.request('scope',scope).catch(fault);void gifts();},undefined,connectionDiagnostic);
+  tiktok=new TikTok(accept,(connection,message)=>{state.connection=connection;state.connectionMessage=message;state.roomId=tiktok.room;publish();},room=>{selectGuideRoom(state,`tiktok:${room}`);scope=`tiktok:${room}`;state.demo=false;state.gifts=[];state.catalogScope='';void ledger.request('verify',{scope:'',gifts:[]}).catch(fault);void ledger.request('scope',scope).catch(fault);void gifts();},giftTest?giftCheckFactory:undefined,connectionDiagnostic,undefined,giftDiagnostic);
   control=new BrowserWindow({...windowOptions(),title:'Live Avatar Printer — Control Panel',width:1320,height:920,minWidth:980,minHeight:720,show:!testing});
   control.on('closed',()=>{control=undefined;app.quit();});load(control,'control');openOutput();
   const isControl=(id:number)=>control?.webContents.id===id;
@@ -190,6 +196,7 @@ app.whenReady().then(async()=>{
   ipcMain.handle('completeSpotlight',async(e,token)=>{const spot=state.spotlight;if(closing||resetting||clock.stopped||!isOutput(e.sender.id)||!spot||spot.token!==token||clock.now()-spot.started<spot.duration-80)return false;completions++;try{await ledger.request('completeSpotlight',token);if(state.spotlight?.token===token)state.spotlight=null;await tick();return true;}catch(error){fault(error);return false;}finally{completions--;}});
   interval=setInterval(()=>void tick(),250);await tick();
   if(connectionTest)void connectionCheck(control!).then(()=>app.quit()).catch(error=>{diagnostic('connection-check',error);writeFileSync(join(process.cwd(),'artifacts','connection-result.json'),JSON.stringify({passed:false,time:new Date().toISOString(),step:connectionCheckStep,errors:safeError(error)}));app.exit(1);});
+  if(giftTest)void giftCheck(control!,output!,state,ledger,action).then(()=>app.quit()).catch(error=>{diagnostic('gift-check',error);writeFileSync(join(process.cwd(),'artifacts','gift-intake-result.json'),JSON.stringify({passed:false,time:new Date().toISOString(),error:String(error)}));app.exit(1);});
   if(smoke)void smokeTest();
   if(visual)void visualTest();
   if(guide)void guideCheck(output!,control!,state,ledger,images,action).then(()=>app.quit()).catch(error=>{diagnostic('guide-check',error);app.exit(1);});

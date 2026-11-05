@@ -226,3 +226,28 @@ RESET SESSION preserves settings and the display catalog. Local bundled images
 appear immediately as fallbacks, and cached room images can replace them. Text
 remains even if neither image can decode. No network or paid service is required
 to display the suggested guide.
+
+### Gift intake diagnostics
+
+Control Panel → **Recent Gift Events** shows receipt at the connector and the final
+storage outcome: queued, combo pending, duplicate, unmapped, verification failed,
+or rejected with a specific normalization reason. The list is bounded to the last
+80 diagnostic records in this app session. Technical details never appear in
+Broadcast Output. COPY DIAGNOSTICS also includes this list. Redacted records are
+appended to `gift-events.log` beside `printer.sqlite` in the app user-data directory;
+no viewer identity/avatar, raw payload, cookie, token or signed URL is logged.
+
+If verification fails, open Settings → REFRESH GIFT LIST. Check the real gift ID,
+name and price for this room, select the actual gift for the intended tier, set an
+English display name, and SAVE SETTINGS. An unloaded catalog or a suggested guide
+is not verification. Rose and Rosa are different gifts. Never map by price alone.
+Unverified events stay on disk until the room catalog/mapping can be verified.
+Unmapped verified gifts are recorded for configuration but are not retroactively
+rewarded automatically. Reconnection must fetch and verify the current room again.
+
+`npm run check:gifts` uses a test-only synthetic connector and an isolated profile
+to exercise the registered gift listener, normalizer, worker, SQLite ledger,
+Control Panel diagnostics, stopped queue and Broadcast Output acknowledgments.
+The resulting `artifacts/gift-intake-result.json` explicitly marks `liveVerified:
+false`. Unit tests also encode/decode synthetic payloads with the installed v3
+protobuf schema. Neither test is a real TikTok LIVE transmission.

@@ -1,5 +1,6 @@
-import {normalize,catalog} from './normalizer';
-import type {Gift,LiveEvent} from '../src/shared';
+import {normalize,catalog,giftRejection} from './normalizer';
+import {giftDetails} from './gift-diagnostics';
+import type {Gift,LiveEvent,GiftEventDiagnostic} from '../src/shared';
 import {normalizeUsername,classifyError,safeError,type ConnectionDiagnostic} from './connection-diagnostics';
 export type Client={on:(name:string,fn:(data:any)=>void)=>any;removeAllListeners:()=>any;connect:()=>Promise<any>;disconnect:()=>any;fetchAvailableGifts:()=>Promise<any>};
 export type Factory=(username:string)=>Promise<Client>;
@@ -15,7 +16,7 @@ export class TikTok {
   client?:Client;generation=0;timer?:ReturnType<typeof setTimeout>;deadline?:ReturnType<typeof setTimeout>;room='';connected=false;
   phase='disconnected';private attemptId=0;
   get session(){return this.attemptId;}
-  constructor(private receive:(e:LiveEvent)=>void,private status:(state:string,message:string)=>void,private onRoom:(room:string)=>void,private factory:Factory=createConnection,private log:(entry:ConnectionDiagnostic)=>void=()=>{},private timeoutMs=25000){}
+  constructor(private receive:(e:LiveEvent)=>void,private status:(state:string,message:string)=>void,private onRoom:(room:string)=>void,private factory:Factory=createConnection,private log:(entry:ConnectionDiagnostic)=>void=()=>{},private timeoutMs=25000,private giftLog:(entry:GiftEventDiagnostic)=>void=()=>{}){}
   private report(stage:string,code:string,attempt:number,error?:unknown){this.log({time:new Date().toISOString(),stage,code,attempt,state:this.phase,roomId:this.room||undefined,...(error?{errors:safeError(error)}:{})});}
   private update(state:string,message=''){this.phase=state;this.status(state,message);}
   private close(c:Client){
@@ -46,7 +47,7 @@ export class TikTok {
     deadline=setTimeout(()=>fail(Error('Connection timeout')),this.timeoutMs);this.deadline=deadline;
     try{
       c=await this.factory(name);if(!current()){this.close(c);return;}this.client=c;
-      for(const type of ['like','gift'] as const)c.on(type,raw=>{if(!current()||!this.connected)return;const e=normalize(type,raw,this.room);if(e)this.receive(e);});
+      for(const type of ['like','gift'] as const)c.on(type,raw=>{if(!current()||!this.connected)return;const e=normalize(type,raw,this.room);if(type==='gift')this.giftLog({time:new Date().toISOString(),...giftDetails(raw),outcome:e?'received':'rejected',reason:e?'Awaiting durable verification and queue commit.':giftRejection(raw,this.room)});if(e)this.receive(e);});
       c.on('error',error=>{
         if(!current())return;
         // Some errors (e.g. catalog fetch) are nonfatal. connect()'s rejection and

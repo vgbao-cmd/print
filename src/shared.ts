@@ -14,12 +14,16 @@ export interface Settings {
 export const DEFAULTS:Settings={likes:100,thresholds:[10,30,80],durations:[3000,2000,1000,1500],volume:0.35,printVolume:.35,musicVolume:.35,voiceVolume:.65,sound:true,tts:false,voice:'',mappings:{},tiers:DEFAULT_TIERS};
 export interface LiveEvent {
   id:string; scope:string; type:'like'|'gift'; userId:string; name:string; avatar:string;
-  count:number; giftId?:string; coins?:number; streak?:string; streakable?:boolean; end?:boolean; demoTier?:Tier;
+  count:number; giftName?:string; giftId?:string; coins?:number; streak?:string; streakable?:boolean; end?:boolean; demoTier?:Tier;
 }
 export interface Print {id:string; name:string; userId:string; avatar:string; tier:Tier; quantity:number; source:string;style?:TierStyle;paperGap?:number;sealed?:boolean}
 export interface Batch {token:string; items:Print[]; duration:number; started:number}
 export interface Spotlight {token:string;item:Print;duration:number;started:number}
+export interface GiftEventDiagnostic {
+ time:string;giftId?:string;giftName?:string;coins?:number;quantity?:number;eventId?:string;comboId?:string;tier?:Tier;outcome:string;reason:string;
+}
 export interface Snapshot {
+ recentGiftEvents?:GiftEventDiagnostic[];
   guideCatalog?:Gift[];guideRoom?:string;guideAccount?:string;
   connectionMessage?:string;roomId?:string;connectionDiagnostic?:string;
   settings:Settings; connection:string; message:string; paused:boolean; demo:boolean; queue:number; completed:number;

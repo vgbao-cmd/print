@@ -3,7 +3,7 @@ import {Store} from './store';
 import {mkdirSync} from 'node:fs';
 import {join} from 'node:path';
 mkdirSync(workerData.directory,{recursive:true});
-const store=new Store(join(workerData.directory,'printer.sqlite'));
+const store=new Store(join(workerData.directory,'printer.sqlite'),giftDiagnostic=>parentPort!.postMessage({giftDiagnostic}));
 parentPort!.on('message',({id,type,data})=>{
   try{
     let result:unknown;

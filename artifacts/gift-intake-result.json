@@ -1,0 +1,361 @@
+{
+  "passed": true,
+  "time": "2026-11-05T15:04:30.997Z",
+  "liveVerified": false,
+  "transport": "Synthetic connector factory and native-shaped payloads; actual Electron/IPC/worker/SQLite/scheduler/output",
+  "fixtureMappings": [
+    {
+      "id": "900000001",
+      "name": "Rose",
+      "coins": 1,
+      "image": "",
+      "tier": "glow"
+    },
+    {
+      "id": "900000002",
+      "name": "Finger Heart",
+      "coins": 5,
+      "image": "",
+      "tier": "bloom"
+    },
+    {
+      "id": "900000003",
+      "name": "Rosa",
+      "coins": 10,
+      "image": "",
+      "tier": "love"
+    },
+    {
+      "id": "900000004",
+      "name": "Perfume",
+      "coins": 20,
+      "image": "",
+      "tier": "royal"
+    },
+    {
+      "id": "900000005",
+      "name": "Doughnut",
+      "coins": 30,
+      "image": "",
+      "tier": "rainbow"
+    },
+    {
+      "id": "900000006",
+      "name": "Takoyaki",
+      "coins": 88,
+      "image": "",
+      "tier": "legendary"
+    },
+    {
+      "id": "900000007",
+      "name": "Hand Heart",
+      "coins": 100,
+      "image": "",
+      "tier": "fame"
+    }
+  ],
+  "queuedWhileStopped": 12,
+  "completed": 12,
+  "likesThreshold": 123,
+  "diagnostics": [
+    {
+      "time": "2026-11-05T15:04:24.887Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 1,
+      "eventId": "9401",
+      "comboId": "",
+      "tier": "glow",
+      "outcome": "queued",
+      "reason": "Durable print job committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.887Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 1,
+      "eventId": "9400",
+      "comboId": "",
+      "tier": "glow",
+      "outcome": "queued",
+      "reason": "Durable print job committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.887Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 3,
+      "eventId": "9200",
+      "comboId": "9300",
+      "tier": "glow",
+      "outcome": "duplicate",
+      "reason": "Event receipt already committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.887Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 3,
+      "eventId": "9200",
+      "comboId": "9300",
+      "tier": "glow",
+      "outcome": "queued",
+      "reason": "Durable print job committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.887Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 2,
+      "eventId": "9200",
+      "comboId": "9300",
+      "tier": "glow",
+      "outcome": "combo pending",
+      "reason": "Waiting for the final combo update."
+    },
+    {
+      "time": "2026-11-05T15:04:24.887Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 1,
+      "eventId": "9200",
+      "comboId": "9300",
+      "tier": "glow",
+      "outcome": "combo pending",
+      "reason": "Waiting for the final combo update."
+    },
+    {
+      "time": "2026-11-05T15:04:24.887Z",
+      "giftId": "900000007",
+      "giftName": "Hand Heart",
+      "coins": 100,
+      "quantity": 1,
+      "eventId": "9106",
+      "comboId": "",
+      "tier": "fame",
+      "outcome": "queued",
+      "reason": "Durable print job committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.886Z",
+      "giftId": "900000006",
+      "giftName": "Takoyaki",
+      "coins": 88,
+      "quantity": 1,
+      "eventId": "9105",
+      "comboId": "",
+      "tier": "legendary",
+      "outcome": "queued",
+      "reason": "Durable print job committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.886Z",
+      "giftId": "900000005",
+      "giftName": "Doughnut",
+      "coins": 30,
+      "quantity": 1,
+      "eventId": "9104",
+      "comboId": "",
+      "tier": "rainbow",
+      "outcome": "queued",
+      "reason": "Durable print job committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.886Z",
+      "giftId": "900000004",
+      "giftName": "Perfume",
+      "coins": 20,
+      "quantity": 1,
+      "eventId": "9103",
+      "comboId": "",
+      "tier": "royal",
+      "outcome": "queued",
+      "reason": "Durable print job committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.886Z",
+      "giftId": "900000003",
+      "giftName": "Rosa",
+      "coins": 10,
+      "quantity": 1,
+      "eventId": "9102",
+      "comboId": "",
+      "tier": "love",
+      "outcome": "queued",
+      "reason": "Durable print job committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.886Z",
+      "giftId": "900000002",
+      "giftName": "Finger Heart",
+      "coins": 5,
+      "quantity": 1,
+      "eventId": "9101",
+      "comboId": "",
+      "tier": "bloom",
+      "outcome": "queued",
+      "reason": "Durable print job committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.873Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 1,
+      "eventId": "9100",
+      "comboId": "",
+      "tier": "glow",
+      "outcome": "queued",
+      "reason": "Durable print job committed."
+    },
+    {
+      "time": "2026-11-05T15:04:24.869Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 1,
+      "eventId": "9401",
+      "comboId": "0",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.869Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 1,
+      "eventId": "9400",
+      "comboId": "0",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.869Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 3,
+      "eventId": "9200",
+      "comboId": "9300",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.869Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 3,
+      "eventId": "9200",
+      "comboId": "9300",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.869Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 2,
+      "eventId": "9200",
+      "comboId": "9300",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.868Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 1,
+      "eventId": "9200",
+      "comboId": "9300",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.868Z",
+      "giftId": "900000007",
+      "giftName": "Hand Heart",
+      "coins": 100,
+      "quantity": 1,
+      "eventId": "9106",
+      "comboId": "0",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.868Z",
+      "giftId": "900000006",
+      "giftName": "Takoyaki",
+      "coins": 88,
+      "quantity": 1,
+      "eventId": "9105",
+      "comboId": "0",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.868Z",
+      "giftId": "900000005",
+      "giftName": "Doughnut",
+      "coins": 30,
+      "quantity": 1,
+      "eventId": "9104",
+      "comboId": "0",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.868Z",
+      "giftId": "900000004",
+      "giftName": "Perfume",
+      "coins": 20,
+      "quantity": 1,
+      "eventId": "9103",
+      "comboId": "0",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.868Z",
+      "giftId": "900000003",
+      "giftName": "Rosa",
+      "coins": 10,
+      "quantity": 1,
+      "eventId": "9102",
+      "comboId": "0",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.868Z",
+      "giftId": "900000002",
+      "giftName": "Finger Heart",
+      "coins": 5,
+      "quantity": 1,
+      "eventId": "9101",
+      "comboId": "0",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    },
+    {
+      "time": "2026-11-05T15:04:24.867Z",
+      "giftId": "900000001",
+      "giftName": "Rose",
+      "coins": 1,
+      "quantity": 1,
+      "eventId": "9100",
+      "comboId": "0",
+      "outcome": "received",
+      "reason": "Awaiting durable verification and queue commit."
+    }
+  ]
+}
