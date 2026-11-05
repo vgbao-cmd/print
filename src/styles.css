@@ -3,3 +3,5 @@
 @media(min-width:1500px){.desk-layout{grid-template-columns:minmax(400px,1fr) 345px;gap:36px}.control-main{padding:40px 48px}.sidebar{width:230px}.control-main{margin-left:230px}}@media(max-width:1100px){.sidebar{width:180px;padding:28px 12px}.control-main{margin-left:180px;padding:26px 22px}.desk-layout{grid-template-columns:minmax(330px,1fr) 225px;gap:18px}.brand{gap:9px;font-size:8px}.brand b{font-size:15px}.page-header .button{font-size:8px;padding:12px}.panel,.connection-card{padding:18px}.stats-row{gap:8px}.stat-card{padding:16px 12px}.connection-badge{font-size:7px}.tier-chip{font-size:6px}.queue-row{gap:7px}}
 
 .playback-controls{display:flex;align-items:center;gap:12px;margin-bottom:20px}.playback-controls strong{margin-right:auto}.reset-overlay{position:fixed;inset:0;z-index:100;background:#08121bcc;display:grid;place-items:center}.reset-dialog{max-width:580px;padding:32px}.reset-dialog p{line-height:1.7;margin:20px 0}
+
+.connection-badge.error{color:#ad4c36}.connection-badge.error i{background:#ad4c36}

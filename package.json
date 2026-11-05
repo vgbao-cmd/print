@@ -7,6 +7,7 @@
     "build": "npm run typecheck && vite build && node scripts/build-electron.mjs",
     "start": "electron .", "pack": "npm run build && electron-builder --win --dir",
     "dist": "npm run build && electron-builder --win portable", "smoke": "electron . --smoke-test",
+    "check:connection":"electron . --connection-test",
     "benchmark": "node scripts/benchmark.mjs", "check:visual":"electron . --visual-test", "check:premium":"electron . --premium-test", "check:shows":"electron . --show-test", "check:guide":"electron . --guide-test"
   },
   "dependencies": {"react":"^19.0.0","react-dom":"^19.0.0","tiktok-live-connector":"2.5.0"},

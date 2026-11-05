@@ -163,3 +163,47 @@ Live Gift Guide entries come from those same verified settings. Unverified/missi
 Room-catalog images take priority. The user-supplied CDN URLs and bundled copies of those exact images are fallbacks for matching suggestions. No fake gift icon replaces a failed image; if all sources fail, its real name, price and style remain. Downloads are limited to four at once, 2 MB per file and a bounded wait queue. Positive image caches are limited to 128 entries / 16 MB in RAM and on disk, with a six-hour lifetime. Failed URLs have a one-minute retry delay. Static WebP gifts are supported directly; two decoder slots limit memory while larger avatars are resampled to at most 512 pixels. Extremely large or animated WebP inputs are rejected.
 
 See [LIVE-STUDIO-SETUP.md](LIVE-STUDIO-SETUP.md) for portrait capture and side-space diagnosis. The app does not use TikFinity.
+
+## Connection diagnostics and rebuilding a fixed Windows app
+
+The connection card shows DISCONNECTED, CONNECTING, CONNECTED, RECONNECTING or ERROR.
+**CONNECT LIVE** works from every tab, including Demo lab. It selects LIVE mode;
+it does not start a stream. Finish queued Demo prints/spotlights or explicitly use
+RESET SESSION before switching to LIVE. LIVE and Demo intake cannot run together.
+STOP and RESUME only affect presentation and leave the TikTok transport running.
+
+Enter `pinus.si`, `@pinus.si`, or `https://www.tiktok.com/@pinus.si/live`.
+A confirmed connection displays its actual room ID. Errors remain in the connection
+card independently of gift-catalog messages. Transient network failures retry at
+2, 4 and 8 seconds (at most three retries); each attempt has a 25-second deadline.
+Invalid accounts, offline streams, access denial and rate limits do not automatically
+retry. Disconnect cancels retries and invalidates late callbacks.
+
+Use **COPY DIAGNOSTICS** after a failure. It copies app/runtime versions, packaged
+status, attempt numbers, stages, error categories, HTTP/network codes and redacted
+stack locations. It excludes raw errors, connector payloads, credentials, signed
+URLs and personal directory paths. The same redacted records are appended to
+`diagnostics.log` in the app's user-data directory (normally
+`%APPDATA%/Live Avatar Printer/`). Do not delete the SQLite database to fix networking.
+The connector uses a third-party signing provider; this change does not add keys,
+cookies, a subscription or a paid service.
+
+From the **updated source folder**, close the previous app and run on Windows with
+Node.js 22 LTS:
+
+```powershell
+npm ci
+npm run build
+npm start
+```
+
+To replace the packaged app, run `npm run pack` and open
+`release\win-unpacked\Live Avatar Printer.exe`, keeping the whole folder together.
+`npm run dist` creates the portable EXE. The `.cmd` launcher prefers an existing
+`release\win-unpacked` EXE, so building only the source does not update that EXE.
+Packaged builds always use bundled renderer files and ignore `VITE_DEV_SERVER_URL`.
+
+`npm run check:connection` exercises the real Electron UI, preload, IPC and installed
+connector in an isolated test profile. Its real network observation is recorded in
+`artifacts/connection-result.json`; it does not simulate successful LIVE access.
+Unit lifecycle tests use mock transports and do not establish LIVE compatibility.
