@@ -1,0 +1,334 @@
+{
+  "passed": true,
+  "time": "2026-11-05T14:00:02.419Z",
+  "checks": [
+    "Connect button → IPC → backend → ERROR UI",
+    "LIVE mode selection",
+    "Demo/LIVE queue separation",
+    "duplicate IPC Connect rejected",
+    "STOP retains transport",
+    "Copy Diagnostics",
+    "Disconnect",
+    "reconnect and cancel during CONNECTING"
+  ],
+  "realAttempt": {
+    "state": "reconnecting",
+    "message": "DNS_ERROR: DNS lookup failed. Check your network and DNS settings. Retrying shortly.",
+    "roomId": ""
+  },
+  "diagnostics": {
+    "app": "1.5.0",
+    "electron": "39.8.10",
+    "node": "22.22.1",
+    "platform": "linux",
+    "packaged": false,
+    "connector": "2.5.0",
+    "connection": "reconnecting",
+    "roomId": "",
+    "history": [
+      {
+        "time": "2026-11-05T13:59:45.665Z",
+        "stage": "disconnect",
+        "code": "CANCELLED",
+        "attempt": 1,
+        "state": "disconnected"
+      },
+      {
+        "time": "2026-11-05T13:59:45.821Z",
+        "stage": "validation",
+        "code": "INVALID_USERNAME",
+        "attempt": 2,
+        "state": "error",
+        "errors": [
+          {
+            "category": "INVALID_USERNAME",
+            "kind": "Error",
+            "stack": [
+              "at main.cjs:134:80",
+              "at main.cjs:266:14",
+              "at main.cjs:1568:18",
+              "at [redacted frame]"
+            ]
+          }
+        ]
+      },
+      {
+        "time": "2026-11-05T13:59:45.978Z",
+        "stage": "connect",
+        "code": "START",
+        "attempt": 4,
+        "state": "connecting"
+      },
+      {
+        "time": "2026-11-05T14:00:00.386Z",
+        "stage": "room-lookup",
+        "code": "DNS_ERROR",
+        "attempt": 4,
+        "state": "connecting",
+        "errors": [
+          {
+            "category": "DNS_ERROR",
+            "kind": "Object"
+          },
+          {
+            "category": "DNS_ERROR",
+            "route": "fetchRoomIdRoute",
+            "kind": "InvalidResponseCompositeError",
+            "stack": [
+              "at lib-DWhiWLli.js:1149:8",
+              "at [redacted frame]",
+              "at lib-DWhiWLli.js:1886:28",
+              "at lib-DWhiWLli.js:1812:29",
+              "at lib-DWhiWLli.js:1794:5",
+              "at main.cjs:321:22"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "RequestError",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at index.js:1171:120",
+              "at index.js:1194:13",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "Error",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "RequestError",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at index.js:1171:120",
+              "at index.js:1194:13",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "Error",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "CONNECTION_FAILED",
+            "route": "fetchRoomIdRoute",
+            "kind": "InvalidResponseError",
+            "stack": [
+              "at lib-DWhiWLli.js:1143:27",
+              "at [redacted frame]",
+              "at lib-DWhiWLli.js:1886:28",
+              "at lib-DWhiWLli.js:1812:29",
+              "at lib-DWhiWLli.js:1794:5",
+              "at main.cjs:321:22"
+            ]
+          }
+        ]
+      },
+      {
+        "time": "2026-11-05T14:00:00.390Z",
+        "stage": "connector-event",
+        "code": "DNS_ERROR",
+        "attempt": 4,
+        "state": "connecting",
+        "errors": [
+          {
+            "category": "DNS_ERROR",
+            "kind": "Object"
+          },
+          {
+            "category": "DNS_ERROR",
+            "route": "fetchRoomIdRoute",
+            "kind": "InvalidResponseCompositeError",
+            "stack": [
+              "at lib-DWhiWLli.js:1149:8",
+              "at [redacted frame]",
+              "at lib-DWhiWLli.js:1886:28",
+              "at lib-DWhiWLli.js:1812:29",
+              "at lib-DWhiWLli.js:1794:5",
+              "at main.cjs:321:22"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "RequestError",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at index.js:1171:120",
+              "at index.js:1194:13",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "Error",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "RequestError",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at index.js:1171:120",
+              "at index.js:1194:13",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "Error",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "CONNECTION_FAILED",
+            "route": "fetchRoomIdRoute",
+            "kind": "InvalidResponseError",
+            "stack": [
+              "at lib-DWhiWLli.js:1143:27",
+              "at [redacted frame]",
+              "at lib-DWhiWLli.js:1886:28",
+              "at lib-DWhiWLli.js:1812:29",
+              "at lib-DWhiWLli.js:1794:5",
+              "at main.cjs:321:22"
+            ]
+          }
+        ]
+      },
+      {
+        "time": "2026-11-05T14:00:00.391Z",
+        "stage": "connect",
+        "code": "DNS_ERROR",
+        "attempt": 4,
+        "state": "reconnecting",
+        "errors": [
+          {
+            "category": "DNS_ERROR",
+            "route": "fetchRoomIdRoute",
+            "kind": "InvalidResponseCompositeError",
+            "stack": [
+              "at lib-DWhiWLli.js:1149:8",
+              "at [redacted frame]",
+              "at lib-DWhiWLli.js:1886:28",
+              "at lib-DWhiWLli.js:1812:29",
+              "at lib-DWhiWLli.js:1794:5",
+              "at main.cjs:321:22"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "RequestError",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at index.js:1171:120",
+              "at index.js:1194:13",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "Error",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "RequestError",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at index.js:1171:120",
+              "at index.js:1194:13",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]",
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "DNS_ERROR",
+            "kind": "Error",
+            "code": "EAI_AGAIN",
+            "stack": [
+              "at [redacted frame]"
+            ]
+          },
+          {
+            "category": "CONNECTION_FAILED",
+            "route": "fetchRoomIdRoute",
+            "kind": "InvalidResponseError",
+            "stack": [
+              "at lib-DWhiWLli.js:1143:27",
+              "at [redacted frame]",
+              "at lib-DWhiWLli.js:1886:28",
+              "at lib-DWhiWLli.js:1812:29",
+              "at lib-DWhiWLli.js:1794:5",
+              "at main.cjs:321:22"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "liveEventsVerified": false
+}

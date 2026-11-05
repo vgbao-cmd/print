@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "time": "2026-11-05T14:00:20.941732+00:00",
+  "completed": 3,
+  "queue": 0,
+  "likesRemainder": 50,
+  "kind": "Synthetic Electron/IPC/SQLite smoke check; not LIVE validation"
+}

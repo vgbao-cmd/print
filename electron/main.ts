@@ -1,9 +1,10 @@
-import {app,BrowserWindow,ipcMain,Menu,dialog,screen,nativeImage} from 'electron';
+import {app,BrowserWindow,ipcMain,Menu,dialog,screen,nativeImage,clipboard} from 'electron';
 import {join} from 'node:path';
 import {appendFileSync,mkdirSync,writeFileSync,readFileSync} from 'node:fs';
 import {randomUUID} from 'node:crypto';
 import {Ledger} from './ledger';
 import {TikTok} from './tiktok';
+import {safeError,type ConnectionDiagnostic} from './connection-diagnostics';
 import {Images} from './images';
 import {MusicFiles} from './music';
 import {PRESETS,resolvePresets,verifiedMapping} from '../src/gift-guide';
@@ -13,9 +14,10 @@ import {premiumCheck} from './premium-check';
 import {demoEvents} from './demo';
 import {SpeedPolicy,validSettings,type LiveEvent,type Settings,type Snapshot} from '../src/shared';
 import {S} from '../src/strings';
+import {connectionCheck,connectionCheckStep} from './connection-check';
 import {PlaybackClock} from '../src/playback';
 
-const smoke=process.argv.includes('--smoke-test'),visual=process.argv.includes('--visual-test'),premium=process.argv.includes('--premium-test'),show=process.argv.includes('--show-test'),guide=process.argv.includes('--guide-test'),testing=smoke||visual||premium||show||guide;
+const smoke=process.argv.includes('--smoke-test'),visual=process.argv.includes('--visual-test'),premium=process.argv.includes('--premium-test'),show=process.argv.includes('--show-test'),guide=process.argv.includes('--guide-test'),connectionTest=process.argv.includes('--connection-test'),testing=smoke||visual||premium||show||guide||connectionTest;
 if(testing){const dir=join(process.cwd(),'artifacts',`test-profile-${Date.now()}`);mkdirSync(dir,{recursive:true});app.setPath('userData',dir);}
 app.setName('Live Avatar Printer');
 app.commandLine.appendSwitch('autoplay-policy','no-user-gesture-required');
@@ -25,11 +27,19 @@ app.on('second-instance',()=>{if(control&&!control.isDestroyed()){control.show()
 let ready=false,closing=false,quitReady=false,busy=false,intakeBusy=false,catalogBusy=false,resetting=false;let completions=0;
 let clock=new PlaybackClock();let resetToken='';
 let intake:LiveEvent[]=[];let interval:ReturnType<typeof setInterval>;
+let connectionRequest=0,connectionPreparing=false;
 let scope='demo:local';const speed=new SpeedPolicy();
 let state:Snapshot={settings:undefined as any,connection:'disconnected',message:'',paused:false,demo:true,queue:0,completed:0,likesRemainder:0,top:[],preview:[],batch:null,spotlight:null,spotlightQueue:0,mode:0,gifts:[],error:'',received:0,duplicates:0,session:'',stopped:false,clock:Date.now(),sentAt:Date.now(),epoch:0,honored:null,seals:[]};
+const connectionHistory:ConnectionDiagnostic[]=[];
+function connectionDiagnostic(entry:ConnectionDiagnostic){
+  connectionHistory.push(entry);if(connectionHistory.length>80)connectionHistory.shift();
+  state.connectionDiagnostic=`${entry.time} · ${entry.stage} · ${entry.code} · attempt ${entry.attempt}`;
+  try{appendFileSync(join(app.getPath('userData'),'diagnostics.log'),JSON.stringify(entry)+'\n');}catch{}
+  publish();
+}
 function diagnostic(stage:string,error:unknown){
   // Never persist connector payloads, URLs, raw error messages, cookies or tokens.
-  const code=error instanceof Error?error.name:'UnknownError';
+  const code=JSON.stringify(safeError(error));
   try{appendFileSync(join(app.getPath('userData'),'diagnostics.log'),`${new Date().toISOString()} ${stage} ${code}\n`);}catch{}
 }
 function fault(error:unknown){diagnostic('storage',error);state.error=S.errors.storage;state.paused=true;tiktok?.disconnect();publish();}
@@ -47,7 +57,7 @@ function load(win:BrowserWindow,kind:string){
   win.webContents.on('will-attach-webview',e=>e.preventDefault());
   win.webContents.on('did-finish-load',()=>win.setTitle(`Live Avatar Printer — ${kind==='broadcast'?'Broadcast Output':'Control Panel'}`));
   const query:Record<string,string>={window:kind};if((visual||premium||show||guide)&&kind==='broadcast')query.validation='1';
-  if(process.env.VITE_DEV_SERVER_URL)void win.loadURL(`${process.env.VITE_DEV_SERVER_URL}/?${new URLSearchParams(query)}`);
+  if(!app.isPackaged&&process.env.VITE_DEV_SERVER_URL)void win.loadURL(`${process.env.VITE_DEV_SERVER_URL}/?${new URLSearchParams(query)}`);
   else void win.loadFile(join(__dirname,'../dist/index.html'),{query});
 }
 function openOutput(){
@@ -85,17 +95,29 @@ async function tick(){
   }catch(error){fault(error);}finally{busy=false;}
 }
 async function gifts(){
-  if(catalogBusy)return;catalogBusy=true;
+  if(catalogBusy)return;catalogBusy=true;const generation=tiktok.session;
   try{
-    const list=await tiktok.gifts();state.gifts=list;
-    state.settings=await ledger.request('save',resolvePresets(state.settings,list));state.catalogScope=scope;await ledger.request('verify',{scope,gifts:list});state.message=S.ui.catalogLoaded;
-  }catch(error){diagnostic('gift-catalog',error);state.message=S.errors.catalog;}finally{catalogBusy=false;publish();}
+    const list=await tiktok.gifts();if(generation!==tiktok.session)return;state.gifts=list;
+    state.settings=await ledger.request('save',resolvePresets(state.settings,list));if(generation!==tiktok.session)return;state.catalogScope=scope;await ledger.request('verify',{scope,gifts:list});if(generation===tiktok.session)state.message=S.ui.catalogLoaded;
+  }catch(error){if(generation===tiktok.session){diagnostic('gift-catalog',error);state.message=S.errors.catalog;}}finally{catalogBusy=false;publish();if(generation!==tiktok.session&&tiktok.connected)void gifts();}
 }
 async function action(name:string,data:any){
   try{
     switch(name){
-      case 'connect':state.error='';state.demo=false;state.gifts=[];state.catalogScope='';await ledger.request('verify',{scope:'',gifts:[]});tiktok.connect(typeof data==='string'?data:'');break;
-      case 'disconnect':tiktok.disconnect();break;
+      case 'connect':{
+        if(connectionPreparing||['connecting','reconnecting','connected'].includes(tiktok.phase))return {ok:false,message:'A TikTok connection is already active. Disconnect before starting another.'};
+        const request=++connectionRequest;connectionPreparing=true;
+        try{
+          await drain();const pending=await ledger.request('snapshot',scope);
+          if(request!==connectionRequest)break;
+          if(state.demo&&(pending.queue||pending.spotlightQueue||state.batch||state.spotlight))return {ok:false,message:'Finish Demo prints and spotlights, or use RESET SESSION before connecting LIVE. Demo work is never mixed into a LIVE session.'};
+          state.error='';state.demo=false;state.gifts=[];state.catalogScope='';
+          tiktok.connect(typeof data==='string'?data:'');
+          await ledger.request('verify',{scope:'',gifts:[]});
+        }finally{connectionPreparing=false;}break;
+      }
+      case 'copyDiagnostics':clipboard.writeText(JSON.stringify({app:app.getVersion(),electron:process.versions.electron,node:process.versions.node,platform:process.platform,packaged:app.isPackaged,connector:'2.5.0',connection:state.connection,roomId:state.roomId,history:connectionHistory},null,2));return {ok:true,message:'Redacted connection diagnostics copied.'};
+      case 'disconnect':connectionRequest++;tiktok.disconnect();break;
       case 'output':openOutput();break;
       case 'pause':state.paused=!state.paused;break;
       case 'stop':await stopPlayback();break;
@@ -112,7 +134,7 @@ async function action(name:string,data:any){
         }finally{state.paused=state.error===S.errors.storage?true:pausedBefore;publish();}break;
       }
       case 'session':{
-        if(state.connection!=='disconnected')return {ok:false,message:S.ui.demoOnly};
+        if(!['disconnected','error'].includes(state.connection))return {ok:false,message:S.ui.demoOnly};
         if(state.queue||state.batch||state.spotlight||state.spotlightQueue)return {ok:false,message:S.ui.newSessionBlocked};
         const result=await dialog.showMessageBox(control!,{type:'question',title:S.ui.newSession,message:S.ui.newSessionPrompt,buttons:[S.ui.close,S.ui.newSession],defaultId:0,cancelId:0,noLink:true});
         if(result.response===1){await drain();await ledger.request('session');state.message=S.ui.newSessionDone;}break;
@@ -127,8 +149,11 @@ async function action(name:string,data:any){
       case 'gifts':await gifts();break;
       case 'pickMusic':try{return await musicFiles.select(control!);}catch(error){diagnostic('music-import',error);return {ok:false,message:'The audio file could not be imported. Choose a readable audio file smaller than 20 MB.'};}
       case 'demo':{
-        if(state.connection!=='disconnected')return {ok:false,message:S.ui.demoOnly};
-        await drain();state.demo=true;scope='demo:local';
+        if(connectionPreparing||!['disconnected','error'].includes(state.connection))return {ok:false,message:S.ui.demoOnly};
+        await drain();const pending=await ledger.request('snapshot',scope);
+        if(!state.demo&&(pending.queue||pending.spotlightQueue||pending.pendingGifts||state.batch||state.spotlight))return {ok:false,message:'Finish LIVE prints and spotlights, or use RESET SESSION before starting Demo.'};
+        if(connectionPreparing||!['disconnected','error'].includes(state.connection))return {ok:false,message:S.ui.demoOnly};
+        tiktok.disconnect();state.demo=true;scope='demo:local';
         const events=demoEvents(String(data),scope);if(!events.length)return {ok:false,message:S.errors.action};
         await ledger.request('scope',scope);for(const e of events)accept(e);await drain();state.message=S.ui.demoAccepted;break;
       }
@@ -142,7 +167,7 @@ app.whenReady().then(async()=>{
   Menu.setApplicationMenu(Menu.buildFromTemplate([{label:'Live Avatar Printer',submenu:[{label:'Open Broadcast Window',click:openOutput},{type:'separator'},{label:'Exit',role:'quit'}]},{label:'View',submenu:[{label:'Toggle Full Screen',role:'togglefullscreen'}]}]));
   images=new Images(join(app.getPath('userData'),'image-cache'));ledger=new Ledger(app.getPath('userData'));musicFiles=new MusicFiles(join(app.getPath('userData'),'music'));const loaded=await ledger.request('load');state.settings=loaded.settings;state.session=loaded.session;scope=loaded.scope;state.demo=scope.startsWith('demo:');
   if(loaded.runtime?.stopped){clock=new PlaybackClock(Date.now,loaded.runtime.clock,true);state.stopped=true;state.batch=loaded.runtime.batch;state.spotlight=loaded.runtime.spotlight;state.epoch=loaded.runtime.epoch??0;}
-  tiktok=new TikTok(accept,(connection,message)=>{state.connection=connection;state.message=message;publish();},room=>{scope=`tiktok:${room}`;state.demo=false;state.gifts=[];state.catalogScope='';void ledger.request('verify',{scope:'',gifts:[]}).catch(fault);void ledger.request('scope',scope).catch(fault);void gifts();});
+  tiktok=new TikTok(accept,(connection,message)=>{state.connection=connection;state.connectionMessage=message;state.roomId=tiktok.room;publish();},room=>{scope=`tiktok:${room}`;state.demo=false;state.gifts=[];state.catalogScope='';void ledger.request('verify',{scope:'',gifts:[]}).catch(fault);void ledger.request('scope',scope).catch(fault);void gifts();},undefined,connectionDiagnostic);
   control=new BrowserWindow({...windowOptions(),title:'Live Avatar Printer — Control Panel',width:1320,height:920,minWidth:980,minHeight:720,show:!testing});
   control.on('closed',()=>{control=undefined;app.quit();});load(control,'control');openOutput();
   const isControl=(id:number)=>control?.webContents.id===id;
@@ -162,6 +187,7 @@ app.whenReady().then(async()=>{
   });
   ipcMain.handle('completeSpotlight',async(e,token)=>{const spot=state.spotlight;if(closing||resetting||clock.stopped||!isOutput(e.sender.id)||!spot||spot.token!==token||clock.now()-spot.started<spot.duration-80)return false;completions++;try{await ledger.request('completeSpotlight',token);if(state.spotlight?.token===token)state.spotlight=null;await tick();return true;}catch(error){fault(error);return false;}finally{completions--;}});
   interval=setInterval(()=>void tick(),250);await tick();
+  if(connectionTest)void connectionCheck(control!).then(()=>app.quit()).catch(error=>{diagnostic('connection-check',error);writeFileSync(join(process.cwd(),'artifacts','connection-result.json'),JSON.stringify({passed:false,time:new Date().toISOString(),step:connectionCheckStep,errors:safeError(error)}));app.exit(1);});
   if(smoke)void smokeTest();
   if(visual)void visualTest();
   if(guide)void guideCheck(output!,control!,state,ledger,images,action).then(()=>app.quit()).catch(error=>{diagnostic('guide-check',error);app.exit(1);});
