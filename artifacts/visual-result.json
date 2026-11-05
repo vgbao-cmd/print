@@ -1,0 +1,143 @@
+{
+  "passed": true,
+  "design": "Front-facing continuous roll paper",
+  "stages": {
+    "empty": [
+      {
+        "top": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "middle": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "bottom": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "visiblePixels": 0,
+        "fullPixels": 137488,
+        "mismatchedPixels": 137488
+      }
+    ],
+    "half": [
+      {
+        "top": [
+          139,
+          125,
+          90,
+          255
+        ],
+        "middle": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "bottom": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "visiblePixels": 66913,
+        "fullPixels": 137488,
+        "mismatchedPixels": 70575
+      }
+    ],
+    "name": [
+      {
+        "top": [
+          139,
+          125,
+          90,
+          255
+        ],
+        "middle": [
+          236,
+          88,
+          46,
+          255
+        ],
+        "bottom": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "visiblePixels": 137488,
+        "fullPixels": 137488,
+        "mismatchedPixels": 0
+      }
+    ],
+    "feeding": [
+      {
+        "top": [
+          139,
+          125,
+          90,
+          255
+        ],
+        "middle": [
+          236,
+          88,
+          46,
+          255
+        ],
+        "bottom": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "visiblePixels": 137488,
+        "fullPixels": 137488,
+        "mismatchedPixels": 0
+      }
+    ],
+    "complete": [
+      {
+        "top": [
+          139,
+          125,
+          90,
+          255
+        ],
+        "middle": [
+          236,
+          88,
+          46,
+          255
+        ],
+        "bottom": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "visiblePixels": 137488,
+        "fullPixels": 137488,
+        "mismatchedPixels": 0
+      }
+    ]
+  },
+  "metrics": {
+    "frames": 187,
+    "totalMs": 291.8000001758337,
+    "maxMs": 22,
+    "meanMs": 1.560427808426918,
+    "textures": 6
+  },
+  "frames": 200,
+  "videoFps": 20,
+  "phone": "360 × 640 downsample of the actual 1080 × 1920 source",
+  "photoSource": "NASA s90-38573 (sample portrait, not TikTok)",
+  "note": "Canvas draw timings include validation rendering. This is not a sustained LIVE or end-to-end GPU benchmark."
+}

@@ -1,0 +1,266 @@
+{
+  "passed": true,
+  "sizes": [
+    {
+      "id": "classic",
+      "photoLoaded": true,
+      "tier": "classic",
+      "diameter": 128,
+      "pad": 17,
+      "width": 162,
+      "imageHeight": 162,
+      "height": 259.88,
+      "row": 279.88,
+      "feed": 279.88,
+      "nameFont": 22,
+      "lineHeight": 25.959999999999997,
+      "left": 48
+    },
+    {
+      "id": "glow",
+      "photoLoaded": true,
+      "tier": "glow",
+      "diameter": 160,
+      "pad": 18.25,
+      "width": 196.5,
+      "imageHeight": 196.5,
+      "height": 303.5724870438418,
+      "row": 323.5724870438418,
+      "feed": 323.5724870438418,
+      "nameFont": 24.596747752497688,
+      "lineHeight": 29.02416234794727,
+      "left": 48
+    },
+    {
+      "id": "bloom",
+      "photoLoaded": true,
+      "tier": "bloom",
+      "diameter": 192,
+      "pad": 19.5,
+      "width": 231,
+      "imageHeight": 231,
+      "height": 346.38313058397694,
+      "row": 366.38313058397694,
+      "feed": 366.38313058397694,
+      "nameFont": 26.944387170614956,
+      "lineHeight": 31.794376861325645,
+      "left": 48
+    },
+    {
+      "id": "love",
+      "photoLoaded": true,
+      "tier": "love",
+      "diameter": 256,
+      "pad": 22,
+      "width": 300,
+      "imageHeight": 300,
+      "height": 430.13895223761665,
+      "row": 450.13895223761665,
+      "feed": 450.13895223761665,
+      "nameFont": 31.112698372208094,
+      "lineHeight": 36.71298407920555,
+      "left": 48
+    },
+    {
+      "id": "royal",
+      "photoLoaded": true,
+      "tier": "royal",
+      "diameter": 320,
+      "pad": 24.5,
+      "width": 369,
+      "imageHeight": 369,
+      "height": 512.1390920869567,
+      "row": 532.1390920869567,
+      "feed": 532.1390920869567,
+      "nameFont": 34.785054261852174,
+      "lineHeight": 41.046364028985565,
+      "left": 48
+    },
+    {
+      "id": "rainbow",
+      "photoLoaded": true,
+      "tier": "rainbow",
+      "diameter": 384,
+      "pad": 27,
+      "width": 438,
+      "imageHeight": 438,
+      "height": 592.8921168934642,
+      "row": 616.8921168934642,
+      "feed": 616.8921168934642,
+      "nameFont": 38.1051177665153,
+      "lineHeight": 44.96403896448805,
+      "left": 48
+    },
+    {
+      "id": "legendary",
+      "photoLoaded": true,
+      "tier": "legendary",
+      "diameter": 448,
+      "pad": 29.5,
+      "width": 507,
+      "imageHeight": 507,
+      "height": 708.7001386409772,
+      "row": 736.7001386409772,
+      "feed": 679.2998613590228,
+      "nameFont": 41.15823125451335,
+      "lineHeight": 48.56671288032575,
+      "left": 48
+    },
+    {
+      "id": "fame",
+      "photoLoaded": true,
+      "tier": "fame",
+      "diameter": 512,
+      "pad": 32,
+      "width": 576,
+      "imageHeight": 576,
+      "height": 751.76,
+      "row": 783.76,
+      "feed": 636.24,
+      "nameFont": 44,
+      "lineHeight": 51.919999999999995,
+      "left": 37
+    }
+  ],
+  "mask": {
+    "empty": [
+      {
+        "visiblePixels": 0,
+        "fullPixels": 224489,
+        "mismatchedPixels": 224489
+      }
+    ],
+    "partial": [
+      {
+        "visiblePixels": 109771,
+        "fullPixels": 224489,
+        "mismatchedPixels": 114718
+      }
+    ],
+    "complete": [
+      {
+        "visiblePixels": 224489,
+        "fullPixels": 224489,
+        "mismatchedPixels": 0
+      }
+    ]
+  },
+  "frames": 375,
+  "fps": 15,
+  "seconds": 25,
+  "concurrent": {
+    "completed": 3,
+    "activeSpotlight": "royal",
+    "waitingSpotlights": 1
+  },
+  "audio": {
+    "localAudio": {
+      "stopped": false,
+      "voiceGeneration": 0,
+      "ttsQueued": 0,
+      "speaking": false,
+      "musicTracks": 1,
+      "musicKind": "local file",
+      "mediaReady": 4,
+      "scheduledSources": 0,
+      "musicGain": 0.3499999940395355,
+      "printGain": 0.3499999940395355,
+      "ducked": false,
+      "fadeTimers": 0
+    },
+    "ducked": {
+      "stopped": false,
+      "voiceGeneration": 0,
+      "ttsQueued": 0,
+      "speaking": true,
+      "musicTracks": 1,
+      "musicKind": "local file",
+      "mediaReady": 4,
+      "scheduledSources": 0,
+      "musicGain": 0.09811002016067505,
+      "printGain": 0.3499999940395355,
+      "ducked": true,
+      "fadeTimers": 0
+    },
+    "restored": {
+      "stopped": false,
+      "voiceGeneration": 0,
+      "ttsQueued": 0,
+      "speaking": false,
+      "musicTracks": 1,
+      "musicKind": "local file",
+      "mediaReady": 4,
+      "scheduledSources": 0,
+      "musicGain": 0.34199225902557373,
+      "printGain": 0.3499999940395355,
+      "ducked": false,
+      "fadeTimers": 0
+    }
+  },
+  "ui": {
+    "tierControls": 8,
+    "text": "▤\n✦\nLIVE AVATAR\nPRINTER\nWORKSPACE\n▤\nPrint desk\n⚙\nSettings\n✧\nDemo lab\nDEMO\n✦\nYour community. Made in color.\n\nEvery avatar gets a turn.\n\nLive Avatar Printer\nv1.4.0\nCONTROL PANEL\nSETTINGS✦\n\nLoad real gifts from the connected room. Choose an exact price or any replacement. The guide always shows the actual price.\n\n↗   OPEN BROADCAST WINDOW\nDemo events saved.\n×\nRUNNING\nSTOP\nRESET SESSION\n♪\nTikTok connection\nDISCONNECTED\n@\nCONNECT\n\nEnter the account name, without a link.\n\n✓   SAVE SETTINGS\nLikes & speed\nRESTORE DEFAULTS\nLikes per print\nSpeed mode\nQueue threshold\nDuration (seconds)\nStandard\nQuick\nFast\nGroup of 3\n↑ 80\n\nLike counts use only events received by this app.\n\nSound & voice\nPrinter & gift sounds\nEnglish thank-you voice\nPrint Sounds Volume\nMusic Volume\nVoice Volume\n\nMusic fades between rewards and becomes quieter while the English voice is speaking.\n\nEnglish system voice\nAutomatic English voice\nMicrosoft David - English (United States)\nMicrosoft Mark - English (United States)\nMicrosoft Zira - English (United States)\nTEST SOUND\nTEST VOICE\n\nSAVE SETTINGS\n\nGift guide\nREFRESH GIFT LIST\n\nLoad real gifts from the connected room. Choose an exact price or any replacement. The guide always shows the actual price.\n\nMATCH EXACT PRICES\n\nNo real gift list loaded.\n\nGLOW PRINT\nDesign target: 1 COIN\nNOT CONFIGURED\nBLOOM PRINT\nDesign target: 5 COINS\nNOT CONFIGURED\nLOVE PRINT\nDesign target: 10 COINS\nNOT CONFIGURED\nROYAL PRINT\nDesign target: 20 COINS\nNOT CONFIGURED\nRAINBOW PRINT\nDesign target: 30 COINS\nNOT CONFIGURED\nLEGENDARY PRINT\nDesign target: 50 COINS\nNOT CONFIGURED\nHALL OF FAME PRINT\nDesign target: 100 COINS\nNOT CONFIGURED\nPrint styles & spotlights\n\nSize and effects apply to new prints. Saved queue rewards keep their original settings. Each spotlight runs once, including combos.\n\nChoose MP3, WAV, OGG, M4A or FLAC up to 20 MB. The app keeps its own local copy.\n\nCLASSIC PRINT\n×1\nAvatar Scale\nSpotlight Duration (seconds)\nSpotlight Enabled\nVoice Enabled\nMusic Volume\nMusic File\nBuilt-in theme\nCHOOSE MUSIC\nGLOW PRINT\n×1.25\nAvatar Scale\nSpotlight Duration (seconds)\nSpotlight Enabled\nVoice Enabled\nMusic Volume\nMusic File\nBuilt-in theme\nCHOOSE MUSIC\nBLOOM PRINT\n×1.5\nAvatar Scale\nSpotlight Duration (seconds)\nSpotlight Enabled\nVoice Enabled\nMusic Volume\nMusic File\nBuilt-in theme\nCHOOSE MUSIC\nLOVE PRINT\n×2\nAvatar Scale\nSpotlight Duration (seconds)\nSpotlight Enabled\nVoice Enabled\nMusic Volume\nMusic File\nBuilt-in theme\nCHOOSE MUSIC\nROYAL PRINT\n×2.5\nAvatar Scale\nSpotlight Duration (seconds)\nSpotlight Enabled\nVoice Enabled\nMusic Volume\nMusic File\nLocal music test.wav\nCHOOSE MUSIC\nUSE BUILT-IN THEME\nRAINBOW PRINT\n×3\nAvatar Scale\nSpotlight Duration (seconds)\nSpotlight Enabled\nVoice Enabled\nMusic Volume\nMusic File\nBuilt-in theme\nCHOOSE MUSIC\nLEGENDARY PRINT\n×3.5\nAvatar Scale\nSpotlight Duration (seconds)\nSpotlight Enabled\nVoice Enabled\nMusic Volume\nMusic File\nBuilt-in theme\nCHOOSE MUSIC\nHALL OF FAME PRINT\n×4\nAvatar Scale\nSpotlight Duration (seconds)\nSpotlight Enabled\nVoice Enabled\nMusic Volume\nMusic File\nBuilt-in theme\nCHOOSE MUSIC\n✓   SAVE SETTINGS\nBROADCAST OUTPUT\n9:16\n\n1080 × 1920 • portrait output\n\n↗\nTikTok LIVE Studio\n\nCapture Broadcast Output as a window in TikTok LIVE Studio. Capture its application audio separately. Set the source canvas to 1080 × 1920."
+  },
+  "render": {
+    "frames": 522,
+    "totalMs": 2356.7000001221895,
+    "maxMs": 239.6000000089407,
+    "meanMs": 4.514750958088485,
+    "textures": 3,
+    "layouts": [
+      {
+        "id": "demo:local:gift:510d19ae-621d-400d-a2a8-8419e0595f3b:1:draw:1",
+        "photoLoaded": true,
+        "tier": "classic",
+        "diameter": 128,
+        "pad": 17,
+        "width": 162,
+        "imageHeight": 162,
+        "height": 259.88,
+        "row": 279.88,
+        "feed": 279.88,
+        "nameFont": 22,
+        "lineHeight": 25.959999999999997,
+        "left": 48
+      },
+      {
+        "id": "demo:local:gift:510d19ae-621d-400d-a2a8-8419e0595f3b:2:draw:1",
+        "photoLoaded": true,
+        "tier": "royal",
+        "diameter": 320,
+        "pad": 24.5,
+        "width": 369,
+        "imageHeight": 369,
+        "height": 512.1390920869567,
+        "row": 532.1390920869567,
+        "feed": 532.1390920869567,
+        "nameFont": 34.785054261852174,
+        "lineHeight": 41.046364028985565,
+        "left": 48
+      },
+      {
+        "id": "demo:local:gift:510d19ae-621d-400d-a2a8-8419e0595f3b:3:draw:1",
+        "photoLoaded": true,
+        "tier": "fame",
+        "diameter": 512,
+        "pad": 32,
+        "width": 576,
+        "imageHeight": 576,
+        "height": 751.76,
+        "row": 783.76,
+        "feed": 636.24,
+        "nameFont": 44,
+        "lineHeight": 51.919999999999995,
+        "left": 37
+      }
+    ]
+  },
+  "memory": {
+    "rss": 151445504,
+    "heapTotal": 7290880,
+    "heapUsed": 6622416,
+    "external": 4484212,
+    "arrayBuffers": 0
+  },
+  "note": "Deterministic video export; CPU draw timings exclude compositor and encoder. No real TikTok LIVE or long-duration soak tested."
+}

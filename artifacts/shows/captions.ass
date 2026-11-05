@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1200
+PlayResY: 960
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Caption,Arial,24,&H00E9E5DB,&H00FFFFFF,&H001C1208,&H001C1208,0,0,0,0,100,100,0,0,1,1,0,8,0,0,0,1
+Style: Title,Arial,25,&H00EDE5B2,&H00FFFFFF,&H001C1208,&H001C1208,-1,0,0,0,100,100,0,0,1,1,0,8,0,0,0,1
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:47.54,Title,,0,0,0,,{\pos(870,70)}PREMIUM PRINT PERFORMANCES\NROYAL / RAINBOW / LEGENDARY\NHALL OF FAME
+Dialogue: 0,0:00:00.00,0:00:47.54,Caption,,0,0,0,,{\pos(870,175)\fs18}Actual Broadcast Output + Control Panel
+Dialogue: 0,0:00:00.00,0:00:47.54,Caption,,0,0,0,,{\pos(870,880)\fs17}Original soundtrack rendered from app themes.\NNative English TTS is excluded from this recording.
+Dialogue: 0,0:00:00.63,0:00:02.31,Caption,,0,0,0,,{\pos(870,742)}Four individual premium shows queued
+Dialogue: 0,0:00:02.31,0:00:03.17,Caption,,0,0,0,,{\pos(870,742)}STOP during printing
+Dialogue: 0,0:00:03.17,0:00:07.00,Caption,,0,0,0,,{\pos(870,742)}RESUME retains the same print; new\Nevents accepted while stopped
+Dialogue: 0,0:00:07.00,0:00:08.50,Caption,,0,0,0,,{\pos(870,742)}STOP during spotlight and speech
+Dialogue: 0,0:00:08.50,0:00:10.04,Caption,,0,0,0,,{\pos(870,742)}RESUME continues the same spotlight
+Dialogue: 0,0:00:10.04,0:00:16.14,Caption,,0,0,0,,{\pos(870,742)}Show: royal
+Dialogue: 0,0:00:16.14,0:00:24.70,Caption,,0,0,0,,{\pos(870,742)}Show: rainbow
+Dialogue: 0,0:00:24.70,0:00:36.48,Caption,,0,0,0,,{\pos(870,742)}Show: legendary
+Dialogue: 0,0:00:36.48,0:00:39.76,Caption,,0,0,0,,{\pos(870,742)}Show: fame
+Dialogue: 0,0:00:39.76,0:00:40.83,Caption,,0,0,0,,{\pos(870,742)}HALL OF FAME returns to the single\NHONORED GUEST slot
+Dialogue: 0,0:00:40.83,0:00:41.72,Caption,,0,0,0,,{\pos(870,742)}1,000-event burst and combo
+Dialogue: 0,0:00:41.72,0:00:42.84,Caption,,0,0,0,,{\pos(870,742)}RESET SESSION confirmation
+Dialogue: 0,0:00:42.84,0:00:43.61,Caption,,0,0,0,,{\pos(870,742)}RESET SESSION confirmed
+Dialogue: 0,0:00:43.61,0:00:47.48,Caption,,0,0,0,,{\pos(870,742)}Old combo replay rejected; new likes\Naccepted
+Dialogue: 0,0:00:47.48,0:00:47.54,Caption,,0,0,0,,{\pos(870,742)}New session prints exactly once

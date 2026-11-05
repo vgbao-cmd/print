@@ -1,0 +1,453 @@
+{
+  "passed": true,
+  "liveVerified": false,
+  "catalog": "Synthetic fixture IDs only, never actual LIVE gift IDs",
+  "demoGuide": [
+    {
+      "tier": "glow",
+      "name": "Rose",
+      "coins": 1,
+      "imageLoaded": true
+    },
+    {
+      "tier": "bloom",
+      "name": "Finger Heart",
+      "coins": 5,
+      "imageLoaded": true
+    },
+    {
+      "tier": "love",
+      "name": "Rosa",
+      "coins": 10,
+      "imageLoaded": true
+    },
+    {
+      "tier": "royal",
+      "name": "Perfume",
+      "coins": 20,
+      "imageLoaded": true
+    },
+    {
+      "tier": "rainbow",
+      "name": "Doughnut",
+      "coins": 30,
+      "imageLoaded": true
+    },
+    {
+      "tier": "legendary",
+      "name": "Takoyaki",
+      "coins": 88,
+      "imageLoaded": true
+    },
+    {
+      "tier": "fame",
+      "name": "Hand Heart",
+      "coins": 100,
+      "imageLoaded": true
+    }
+  ],
+  "fixtureGuide": [
+    {
+      "tier": "glow",
+      "name": "Rose",
+      "coins": 1,
+      "imageLoaded": true
+    },
+    {
+      "tier": "bloom",
+      "name": "Finger Heart",
+      "coins": 5,
+      "imageLoaded": true
+    },
+    {
+      "tier": "love",
+      "name": "Rosa",
+      "coins": 10,
+      "imageLoaded": true
+    },
+    {
+      "tier": "royal",
+      "name": "Perfume",
+      "coins": 20,
+      "imageLoaded": true
+    },
+    {
+      "tier": "rainbow",
+      "name": "Doughnut",
+      "coins": 30,
+      "imageLoaded": true
+    },
+    {
+      "tier": "legendary",
+      "name": "Takoyaki",
+      "coins": 88,
+      "imageLoaded": true
+    },
+    {
+      "tier": "fame",
+      "name": "Hand Heart",
+      "coins": 100,
+      "imageLoaded": true
+    }
+  ],
+  "missingTakoyaki": [
+    {
+      "tier": "glow",
+      "name": "Rose",
+      "coins": 1,
+      "imageLoaded": true
+    },
+    {
+      "tier": "bloom",
+      "name": "Finger Heart",
+      "coins": 5,
+      "imageLoaded": true
+    },
+    {
+      "tier": "love",
+      "name": "Rosa",
+      "coins": 10,
+      "imageLoaded": true
+    },
+    {
+      "tier": "royal",
+      "name": "Perfume",
+      "coins": 20,
+      "imageLoaded": true
+    },
+    {
+      "tier": "rainbow",
+      "name": "Doughnut",
+      "coins": 30,
+      "imageLoaded": true
+    },
+    {
+      "tier": "fame",
+      "name": "Hand Heart",
+      "coins": 100,
+      "imageLoaded": true
+    }
+  ],
+  "offlineFallback": [
+    {
+      "tier": "glow",
+      "name": "Rose",
+      "coins": 1,
+      "imageLoaded": true
+    },
+    {
+      "tier": "bloom",
+      "name": "Finger Heart",
+      "coins": 5,
+      "imageLoaded": true
+    },
+    {
+      "tier": "love",
+      "name": "Rosa",
+      "coins": 10,
+      "imageLoaded": true
+    },
+    {
+      "tier": "royal",
+      "name": "Perfume",
+      "coins": 20,
+      "imageLoaded": true
+    },
+    {
+      "tier": "rainbow",
+      "name": "Doughnut",
+      "coins": 30,
+      "imageLoaded": true
+    },
+    {
+      "tier": "legendary",
+      "name": "Takoyaki",
+      "coins": 88,
+      "imageLoaded": true
+    },
+    {
+      "tier": "fame",
+      "name": "Hand Heart",
+      "coins": 100,
+      "imageLoaded": true
+    }
+  ],
+  "unverifiedVisible": 0,
+  "sizes": [
+    {
+      "viewport": [
+        540,
+        960
+      ],
+      "canvas": [
+        1080,
+        1920
+      ],
+      "bounds": {
+        "left": 0,
+        "top": 0,
+        "width": 540,
+        "height": 960
+      }
+    },
+    {
+      "viewport": [
+        720,
+        1280
+      ],
+      "canvas": [
+        1080,
+        1920
+      ],
+      "bounds": {
+        "left": 0,
+        "top": 0,
+        "width": 720,
+        "height": 1280
+      }
+    },
+    {
+      "viewport": [
+        960,
+        540
+      ],
+      "canvas": [
+        1080,
+        1920
+      ],
+      "bounds": {
+        "left": 328.125,
+        "top": 0,
+        "width": 303.75,
+        "height": 540
+      }
+    }
+  ],
+  "tierImages": [
+    {
+      "id": "guide-glow",
+      "photoLoaded": true,
+      "tier": "glow",
+      "diameter": 160,
+      "pad": 18.25,
+      "width": 196.5,
+      "imageHeight": 196.5,
+      "height": 303.5724870438418,
+      "row": 323.5724870438418,
+      "feed": 323.5724870438418,
+      "nameFont": 24.596747752497688,
+      "lineHeight": 29.02416234794727,
+      "left": 48
+    },
+    {
+      "id": "guide-bloom",
+      "photoLoaded": true,
+      "tier": "bloom",
+      "diameter": 192,
+      "pad": 19.5,
+      "width": 231,
+      "imageHeight": 231,
+      "height": 346.38313058397694,
+      "row": 366.38313058397694,
+      "feed": 366.38313058397694,
+      "nameFont": 26.944387170614956,
+      "lineHeight": 31.794376861325645,
+      "left": 48
+    },
+    {
+      "id": "guide-love",
+      "photoLoaded": true,
+      "tier": "love",
+      "diameter": 256,
+      "pad": 22,
+      "width": 300,
+      "imageHeight": 300,
+      "height": 430.13895223761665,
+      "row": 450.13895223761665,
+      "feed": 450.13895223761665,
+      "nameFont": 31.112698372208094,
+      "lineHeight": 36.71298407920555,
+      "left": 48
+    },
+    {
+      "id": "guide-royal",
+      "photoLoaded": true,
+      "tier": "royal",
+      "diameter": 320,
+      "pad": 24.5,
+      "width": 369,
+      "imageHeight": 369,
+      "height": 512.1390920869567,
+      "row": 532.1390920869567,
+      "feed": 515.8609079130433,
+      "nameFont": 34.785054261852174,
+      "lineHeight": 41.046364028985565,
+      "left": 48
+    },
+    {
+      "id": "guide-rainbow",
+      "photoLoaded": true,
+      "tier": "rainbow",
+      "diameter": 384,
+      "pad": 27,
+      "width": 438,
+      "imageHeight": 438,
+      "height": 592.8921168934642,
+      "row": 616.8921168934642,
+      "feed": 435.10788310653584,
+      "nameFont": 38.1051177665153,
+      "lineHeight": 44.96403896448805,
+      "left": 48
+    },
+    {
+      "id": "guide-legendary",
+      "photoLoaded": true,
+      "tier": "legendary",
+      "diameter": 448,
+      "pad": 29.5,
+      "width": 507,
+      "imageHeight": 507,
+      "height": 708.7001386409772,
+      "row": 736.7001386409772,
+      "feed": 319.29986135902277,
+      "nameFont": 41.15823125451335,
+      "lineHeight": 48.56671288032575,
+      "left": 48
+    },
+    {
+      "id": "guide-fame",
+      "photoLoaded": true,
+      "tier": "fame",
+      "diameter": 512,
+      "pad": 32,
+      "width": 576,
+      "imageHeight": 576,
+      "height": 751.76,
+      "row": 783.76,
+      "feed": 276.24,
+      "nameFont": 44,
+      "lineHeight": 51.919999999999995,
+      "left": 48
+    }
+  ],
+  "completed": 7,
+  "pendingSpotlights": 4,
+  "render": {
+    "frames": 61,
+    "totalMs": 455.2999999821186,
+    "maxMs": 177.2999999821186,
+    "meanMs": 7.463934425936371,
+    "textures": 4,
+    "guide": [
+      {
+        "tier": "glow",
+        "name": "Rose",
+        "coins": 1,
+        "imageLoaded": true
+      },
+      {
+        "tier": "bloom",
+        "name": "Finger Heart",
+        "coins": 5,
+        "imageLoaded": true
+      },
+      {
+        "tier": "love",
+        "name": "Rosa",
+        "coins": 10,
+        "imageLoaded": true
+      },
+      {
+        "tier": "royal",
+        "name": "Perfume",
+        "coins": 20,
+        "imageLoaded": true
+      },
+      {
+        "tier": "rainbow",
+        "name": "Doughnut",
+        "coins": 30,
+        "imageLoaded": true
+      },
+      {
+        "tier": "legendary",
+        "name": "Takoyaki",
+        "coins": 88,
+        "imageLoaded": true
+      },
+      {
+        "tier": "fame",
+        "name": "Hand Heart",
+        "coins": 100,
+        "imageLoaded": true
+      }
+    ],
+    "layouts": [
+      {
+        "id": "demo:local:gift:1e267340-2098-45a8-9102-8d7f55e00c59:5:draw:1",
+        "photoLoaded": true,
+        "tier": "rainbow",
+        "diameter": 384,
+        "pad": 27,
+        "width": 438,
+        "imageHeight": 438,
+        "height": 592.8921168934642,
+        "row": 616.8921168934642,
+        "feed": 435.10788310653584,
+        "nameFont": 38.1051177665153,
+        "lineHeight": 44.96403896448805,
+        "left": 48
+      },
+      {
+        "id": "demo:local:gift:1e267340-2098-45a8-9102-8d7f55e00c59:6:draw:1",
+        "photoLoaded": true,
+        "tier": "legendary",
+        "diameter": 448,
+        "pad": 29.5,
+        "width": 507,
+        "imageHeight": 507,
+        "height": 708.7001386409772,
+        "row": 736.7001386409772,
+        "feed": 319.29986135902277,
+        "nameFont": 41.15823125451335,
+        "lineHeight": 48.56671288032575,
+        "left": 48
+      },
+      {
+        "id": "demo:local:gift:1e267340-2098-45a8-9102-8d7f55e00c59:3:draw:1",
+        "photoLoaded": true,
+        "tier": "love",
+        "diameter": 256,
+        "pad": 22,
+        "width": 300,
+        "imageHeight": 300,
+        "height": 430.13895223761665,
+        "row": 450.13895223761665,
+        "feed": 450.13895223761665,
+        "nameFont": 31.112698372208094,
+        "lineHeight": 36.71298407920555,
+        "left": 48
+      },
+      {
+        "id": "demo:local:gift:1e267340-2098-45a8-9102-8d7f55e00c59:7:draw:1",
+        "photoLoaded": true,
+        "tier": "fame",
+        "diameter": 512,
+        "pad": 32,
+        "width": 576,
+        "imageHeight": 576,
+        "height": 751.76,
+        "row": 783.76,
+        "feed": 276.24,
+        "nameFont": 44,
+        "lineHeight": 51.919999999999995,
+        "left": 48
+      }
+    ]
+  },
+  "cache": {
+    "entries": 7,
+    "bytes": 54689
+  },
+  "note": "CDN images downloaded successfully and decoded in Electron. Verification logic tested with synthetic room catalogs. No real TikTok LIVE or LIVE Studio session tested."
+}

@@ -1,0 +1,1 @@
+﻿const {app,nativeImage}=require('electron');app.whenReady().then(()=>{const {join}=require('node:path');for(const t of ['glow','bloom','legendary']){const i=nativeImage.createFromPath(join(process.cwd(),'resources','gifts',t+'.webp'));console.log(t,i.isEmpty(),i.getSize());}app.quit();});

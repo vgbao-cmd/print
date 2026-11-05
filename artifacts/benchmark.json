@@ -1,0 +1,19 @@
+{
+  "synthetic": true,
+  "events": 1000,
+  "ingestMs": 55.498999999999995,
+  "eventsPerSecond": 18018.342672840954,
+  "queue": 472,
+  "duplicates": 1000,
+  "completed": 472,
+  "batches": 158,
+  "drainMs": 161.0868,
+  "heapBefore": 6077320,
+  "heapAfter": 8111960,
+  "rssBefore": 44617728,
+  "rssAfter": 65269760,
+  "databaseBytes": 299008,
+  "node": "v22.23.4",
+  "platform": "win32",
+  "note": "Storage/rules benchmark only. Excludes real TikTok, network images, animation and TTS. Not a sustained-load guarantee."
+}

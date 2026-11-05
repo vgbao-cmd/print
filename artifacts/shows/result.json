@@ -1,0 +1,329 @@
+{
+  "passed": true,
+  "seconds": 47.446,
+  "frames": 331,
+  "events": [
+    {
+      "name": "Four individual premium shows queued",
+      "time": 537,
+      "clock": 1793860487893,
+      "completed": 0,
+      "queue": 0,
+      "stopped": false
+    },
+    {
+      "name": "STOP during printing",
+      "time": 1702,
+      "clock": 1793860488965,
+      "completed": 0,
+      "queue": 3,
+      "stopped": true
+    },
+    {
+      "name": "RESUME retains the same print; new events accepted while stopped",
+      "time": 3185,
+      "clock": 1793860488966,
+      "completed": 0,
+      "queue": 4,
+      "stopped": false
+    },
+    {
+      "name": "STOP during spotlight and speech",
+      "time": 7035,
+      "clock": 1793860492823,
+      "completed": 1,
+      "queue": 3,
+      "spotlight": "royal",
+      "stopped": true
+    },
+    {
+      "name": "RESUME continues the same spotlight",
+      "time": 8515,
+      "clock": 1793860492825,
+      "completed": 1,
+      "queue": 3,
+      "spotlight": "royal",
+      "stopped": false
+    },
+    {
+      "name": "Show: royal",
+      "time": 10064,
+      "clock": 1793860494195,
+      "completed": 2,
+      "queue": 2,
+      "spotlight": "royal",
+      "stopped": false
+    },
+    {
+      "name": "Show: rainbow",
+      "time": 16577,
+      "clock": 1793860500917,
+      "completed": 4,
+      "queue": 0,
+      "spotlight": "rainbow",
+      "stopped": false
+    },
+    {
+      "name": "Show: legendary",
+      "time": 24853,
+      "clock": 1793860509056,
+      "completed": 5,
+      "queue": 0,
+      "spotlight": "legendary",
+      "stopped": false
+    },
+    {
+      "name": "Show: fame",
+      "time": 35808,
+      "clock": 1793860520005,
+      "completed": 5,
+      "queue": 0,
+      "spotlight": "fame",
+      "stopped": false
+    },
+    {
+      "name": "HALL OF FAME returns to the single HONORED GUEST slot",
+      "time": 39901,
+      "clock": 1793860524211,
+      "completed": 5,
+      "queue": 0,
+      "stopped": false
+    },
+    {
+      "name": "1,000-event burst and combo",
+      "time": 41094,
+      "clock": 1793860525492,
+      "completed": 5,
+      "queue": 1,
+      "stopped": false
+    },
+    {
+      "name": "RESET SESSION confirmation",
+      "time": 41707,
+      "clock": 1793860525492,
+      "completed": 5,
+      "queue": 1,
+      "stopped": false
+    },
+    {
+      "name": "RESET SESSION confirmed",
+      "time": 42716,
+      "clock": 1793860529998,
+      "completed": 0,
+      "queue": 0,
+      "stopped": false
+    },
+    {
+      "name": "Old combo replay rejected; new likes accepted",
+      "time": 43470,
+      "clock": 1793860530826,
+      "completed": 0,
+      "queue": 0,
+      "stopped": false
+    },
+    {
+      "name": "New session prints exactly once",
+      "time": 47407,
+      "clock": 1793860534553,
+      "completed": 1,
+      "queue": 0,
+      "stopped": false
+    }
+  ],
+  "musicTimeline": [
+    {
+      "time": 5.133,
+      "tier": "royal",
+      "duration": 5
+    },
+    {
+      "time": 11.573,
+      "tier": "rainbow",
+      "duration": 7
+    },
+    {
+      "time": 18.68,
+      "tier": "legendary",
+      "duration": 9
+    },
+    {
+      "time": 27.641,
+      "tier": "fame",
+      "duration": 12
+    }
+  ],
+  "printTimeline": [
+    1.161,
+    5.133,
+    9.774,
+    12.648,
+    15.565,
+    42.364,
+    44.045
+  ],
+  "checks": {
+    "printStop": true,
+    "voiceBeforeStop": {
+      "stopped": false,
+      "voiceGeneration": 1,
+      "ttsQueued": 1,
+      "speaking": true,
+      "musicTracks": 1,
+      "musicKind": "synthesized",
+      "mediaReady": 0,
+      "scheduledSources": 7,
+      "musicGain": 0.07699999958276749,
+      "printGain": 0.3497847318649292,
+      "ducked": true,
+      "fadeTimers": 0
+    },
+    "stoppedAudio": {
+      "stopped": true,
+      "voiceGeneration": 2,
+      "ttsQueued": 2,
+      "speaking": false,
+      "musicTracks": 0,
+      "musicKind": "none",
+      "mediaReady": 0,
+      "scheduledSources": 0,
+      "musicGain": 0.07699999958276749,
+      "printGain": 0.3497847318649292,
+      "ducked": false,
+      "fadeTimers": 0
+    },
+    "spotStop": true,
+    "honored": {
+      "id": "demo:local:gift:acc1bde4-2a07-4a6f-a079-379959607a0c:4:draw:1",
+      "userId": "show-3",
+      "name": "Demo Portrait",
+      "avatar": "demo:portrait",
+      "tier": "fame",
+      "quantity": 1,
+      "source": "demo:local",
+      "style": {
+        "scale": 4,
+        "spotlightDuration": 12000,
+        "spotlightEnabled": true,
+        "musicVolume": 0.65,
+        "musicFile": "",
+        "musicName": "",
+        "voiceEnabled": true
+      }
+    },
+    "confirmation": "RESET SESSION\n\nReset this session? This clears active and waiting prints, spotlights, speech, like counts and balances, print history, rankings and the honored guest. Gift settings, volumes, account and TikTok connection are kept. Event replay protection is kept.\n\nCANCEL\nRESET SESSION",
+    "afterReset": {
+      "completed": 0,
+      "queue": 0,
+      "spotlightQueue": 0,
+      "honored": null
+    },
+    "newSession": {
+      "pendingGifts": 0,
+      "paperHistory": [
+        {
+          "id": "demo:local:like:c00db005-84d3-45e1-8c2a-de6c7921328f:1:draw:1",
+          "userId": "demo-photo",
+          "name": "Demo Portrait",
+          "avatar": "demo:portrait",
+          "tier": "classic",
+          "quantity": 1,
+          "source": "demo:local",
+          "style": {
+            "scale": 1,
+            "spotlightDuration": 0,
+            "spotlightEnabled": false,
+            "musicVolume": 0.65,
+            "musicFile": "",
+            "musicName": "",
+            "voiceEnabled": true
+          },
+          "paperGap": 279.88
+        }
+      ],
+      "queue": 0,
+      "honored": null,
+      "seals": [],
+      "spotlightQueue": 0,
+      "clearThrough": 0,
+      "completed": 1,
+      "received": 1,
+      "duplicates": 5,
+      "session": "3c5839ab-2424-4136-b064-2461abddbffa",
+      "top": [],
+      "likesRemainder": 0,
+      "preview": []
+    }
+  },
+  "textureMax": 4,
+  "scheduledSourcesMax": 15,
+  "mainRSSMax": 213192704,
+  "render": {
+    "frames": 388,
+    "totalMs": 495.3000001311302,
+    "maxMs": 177.09999999403954,
+    "meanMs": 1.2765463920905418,
+    "textures": 1,
+    "guide": [
+      {
+        "tier": "glow",
+        "name": "Rose",
+        "coins": 1,
+        "imageLoaded": true
+      },
+      {
+        "tier": "bloom",
+        "name": "Finger Heart",
+        "coins": 5,
+        "imageLoaded": true
+      },
+      {
+        "tier": "love",
+        "name": "Rosa",
+        "coins": 10,
+        "imageLoaded": true
+      },
+      {
+        "tier": "royal",
+        "name": "Perfume",
+        "coins": 20,
+        "imageLoaded": true
+      },
+      {
+        "tier": "rainbow",
+        "name": "Doughnut",
+        "coins": 30,
+        "imageLoaded": true
+      },
+      {
+        "tier": "legendary",
+        "name": "Takoyaki",
+        "coins": 88,
+        "imageLoaded": true
+      },
+      {
+        "tier": "fame",
+        "name": "Hand Heart",
+        "coins": 100,
+        "imageLoaded": true
+      }
+    ],
+    "layouts": [
+      {
+        "id": "demo:local:like:c00db005-84d3-45e1-8c2a-de6c7921328f:1:draw:1",
+        "photoLoaded": true,
+        "tier": "classic",
+        "diameter": 128,
+        "pad": 17,
+        "width": 162,
+        "imageHeight": 162,
+        "height": 259.88,
+        "row": 279.88,
+        "feed": 279.88,
+        "nameFont": 22,
+        "lineHeight": 25.959999999999997,
+        "left": 48
+      }
+    ]
+  },
+  "note": "Actual Electron queue, controls and audio. No live TikTok or long-duration soak. Recorded audio includes WebAudio music and print sounds; native TTS is excluded from recording."
+}

@@ -1,0 +1,16 @@
+{
+  "seconds": 47.542,
+  "rate": 24000,
+  "peak": 0.06282665038549957,
+  "stops": [
+    [
+      2.306,
+      3.173
+    ],
+    [
+      7.004,
+      8.502
+    ]
+  ],
+  "source": "Offline rendering from original app themes, actual observed show timestamps and virtual Stop/Resume timeline; no TTS. Not a speaker or native audio recording."
+}

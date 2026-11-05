@@ -1,0 +1,58 @@
+[
+  {
+    "tier": "glow",
+    "name": "Rose",
+    "url": "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+    "status": 200,
+    "bytes": 4904,
+    "ok": true
+  },
+  {
+    "tier": "bloom",
+    "name": "Finger Heart",
+    "url": "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/a4c4dc437fd3a6632aba149769491f49.png~tplv-obj.webp",
+    "status": 200,
+    "bytes": 4420,
+    "ok": true
+  },
+  {
+    "tier": "love",
+    "name": "Rosa",
+    "url": "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eb77ead5c3abb6da6034d3cf6cfeb438~tplv-obj.webp",
+    "status": 200,
+    "bytes": 5040,
+    "ok": true
+  },
+  {
+    "tier": "royal",
+    "name": "Perfume",
+    "url": "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/20b8f61246c7b6032777bb81bf4ee055~tplv-obj.webp",
+    "status": 200,
+    "bytes": 6420,
+    "ok": true
+  },
+  {
+    "tier": "rainbow",
+    "name": "Doughnut",
+    "url": "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/4e7ad6bdf0a1d860c538f38026d4e812~tplv-obj.webp",
+    "status": 200,
+    "bytes": 3686,
+    "ok": true
+  },
+  {
+    "tier": "legendary",
+    "name": "Takoyaki",
+    "url": "https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/b0d9f32b9d4c04afbb0267dcb5b576fa.png~tplv-obj.webp",
+    "status": 200,
+    "bytes": 5880,
+    "ok": true
+  },
+  {
+    "tier": "fame",
+    "name": "Hand Heart",
+    "url": "https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/374dfe46d5b09ce1db19be06202d34f5.png~tplv-obj.webp",
+    "status": 200,
+    "bytes": 10540,
+    "ok": true
+  }
+]
